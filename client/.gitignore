@@ -1,4 +1,3 @@
 /node_modules/
-/public/app/
 *.map
 .DS_Store
