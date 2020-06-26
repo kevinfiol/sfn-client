@@ -1,11 +1,8 @@
 <script>
-	import Tailwind from './Tailwind.svelte';
-	export let name;
 </script>
 
 <main>
-	<h1>Hello {name}!</h1>
-	<p>Visit the <a href="https://svelte.dev/tutorial">Svelte tutorial</a> to learn how to build Svelte apps.</p>
+	<h1>Svelte world.</h1>
 </main>
 
 <style>
@@ -17,7 +14,7 @@
 	}
 
 	h1 {
-		@apply bg-black text-black;
+		@apply bg-black text-white;
 		text-transform: uppercase;
 		font-size: 4em;
 		font-weight: 100;

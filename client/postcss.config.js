@@ -1,8 +1,12 @@
+const cssnano = require('cssnano');
+const autoprefixer = require('autoprefixer');
+const tailwindcss = require('tailwindcss');
+
 const purgecss = require('@fullhuman/postcss-purgecss')({
   content: [
-    './**/**/*.ejs',
-    './**/**/*.html',
-    './**/**/*.svelte'
+    './src/**/*.njk',
+    './src/**/*.html',
+    './src/**/*.svelte'
   ],
 
   whitelistPatterns: [/svelte-/],
@@ -10,11 +14,13 @@ const purgecss = require('@fullhuman/postcss-purgecss')({
   defaultExtractor: content => content.match(/[\w-/:]+(?<!:)/g) || []
 });
 
-const production = !process.env.ROLLUP_WATCH
+const isProd = process.env.NODE_ENV === 'PROD';
+const isDev  = process.env.NODE_ENV === 'DEV';
 
 module.exports = {
   plugins: [
-    require('tailwindcss'),
-    ...(production ? [purgecss] : [])
+    tailwindcss,
+    autoprefixer,
+    ...(isProd ? [purgecss, cssnano] : [])
   ]
 };

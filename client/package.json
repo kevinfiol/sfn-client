@@ -2,17 +2,19 @@
   "name": "svelte-app",
   "version": "1.0.0",
   "scripts": {
-    "build:apps": "rollup -c",
-    "dev:apps": "rollup -c -w",
-    "build": "eleventy --input=./static/tailwind.css --output=./public && postcss ./static --dir ./public/css",
-    "dev": "eleventy --input=./static --output=./public --serve",
-    "serve": "sirv public"
+    "build": "eleventy --input=./src --output=./public && cross-env NODE_ENV=PROD postcss ./src/_css --dir ./public/css && cross-env NODE_ENV=PROD rollup -c",
+    "dev": "eleventy --input=./src --output=./public --serve --port=8090",
+    "dev:app": "cross-env NODE_ENV=DEV rollup -c -w",
+    "serve": "sirv public --port 8090"
   },
   "devDependencies": {
     "@11ty/eleventy": "^0.11.0",
     "@fullhuman/postcss-purgecss": "^2.3.0",
     "@rollup/plugin-commonjs": "^12.0.0",
     "@rollup/plugin-node-resolve": "^8.0.0",
+    "autoprefixer": "^9.8.4",
+    "cross-env": "^7.0.2",
+    "cssnano": "^4.1.10",
     "postcss": "^7.0.32",
     "postcss-cli": "^7.1.1",
     "postcss-load-config": "^2.1.0",
