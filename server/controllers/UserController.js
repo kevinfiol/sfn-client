@@ -1,9 +1,9 @@
-import Res from '../utils/Res.js';
+import Responder from '../utils/Responder.js';
 import { SteamService } from '../container.js';
 
 const UserController = {
     index(ctx) {
-        Res.json(ctx, { foo: 2 });
+        Responder.json(ctx, { foo: 2 });
     },
 
     async getUser(ctx) {
@@ -12,7 +12,7 @@ const UserController = {
 
             try {
                 const steamid = await SteamService.getSteamID(identifier);
-                Res.json(ctx, { steamid })
+                Responder.json(ctx, { steamid })
             } catch(e) {
                 throw e;
             }

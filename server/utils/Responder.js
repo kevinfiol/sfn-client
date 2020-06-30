@@ -1,4 +1,4 @@
-const Res = {
+const Responder = {
     json(ctx, obj) {
         ctx.response.headers.set('Content-Type', 'application/json');
         ctx.response.body = JSON.stringify(obj);
@@ -6,4 +6,4 @@ const Res = {
     }
 };
 
-export default Res;
+export default Responder;

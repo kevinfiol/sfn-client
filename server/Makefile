@@ -7,5 +7,8 @@ debug:
 lock:
 	deno cache --lock=lock.json --lock-write deps.js
 
+# dbsync:
+# 	deno run ./models/init.js
+
 reload:
 	deno --reload

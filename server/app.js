@@ -1,6 +1,8 @@
 import config from './config.js';
-import { Application } from './deps.js';
+import { Application, Snelm } from './deps.js';
+
 const app = new Application();
+const snelm = new Snelm('oak');
 
 app.addEventListener("error", (evt) => {
   // Will log the thrown error to the console.
@@ -11,6 +13,11 @@ app.addEventListener("error", (evt) => {
 app.use(async (ctx, next) => {
     await next();
     console.log(`${ctx.request.method} ${ctx.request.url}`);
+});
+
+app.use(async (ctx, next) => {
+    ctx.response = snelm.snelm(ctx.request, ctx.response);
+    await next();
 });
 
 // Routes

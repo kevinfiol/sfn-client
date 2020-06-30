@@ -1,4 +1,4 @@
-import { DATA_TYPES, Model } frfom '../deps.js';
+import { DATA_TYPES, Model } from '../deps.js';
 
 class LibraryResult extends Model {
     static table = 'library_result';
