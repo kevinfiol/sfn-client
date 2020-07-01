@@ -1,7 +1,7 @@
 const config = {
     port: 8080,
     database: {
-        dialect: 'sqlite',
+        dialect: 'sqlite3',
         options: {
             filepath: './sfn.db'
         }

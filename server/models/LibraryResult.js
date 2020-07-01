@@ -10,7 +10,7 @@ class LibraryResult extends Model {
             autoIncrement: true
         },
         uuid: {
-            type: DATA_TYPES.STRING
+            type: DATA_TYPES.STRING,
             unique: true,
             allowNull: false
         }
