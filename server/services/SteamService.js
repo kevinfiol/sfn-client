@@ -5,6 +5,15 @@ const SteamService = {
         this.url = url;
     },
 
+    async serverWakeup() {
+        const endpoint = `${this.url}/app/serverWakeup`;
+        try {
+            await Request.get(endpoint);
+        } catch(e) {
+            throw e;
+        }
+    },
+
     async getSteamID(identifier) {
         const endpoint = `${this.url}/app/getSteamID`;
 
