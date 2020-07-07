@@ -5,70 +5,69 @@ import livereload from 'rollup-plugin-livereload';
 import { terser } from 'rollup-plugin-terser';
 import sveltePreprocess from 'svelte-preprocess';
 
-const isProd = process.env.NODE_ENV === 'PROD';
-const isDev  = process.env.NODE_ENV === 'DEV';
+const production = !process.env.ROLLUP_WATCH;
 
 export default {
-	input: 'src/_app/main.js',
-	output: {
-		sourcemap: true,
-		format: 'iife',
-		name: 'app',
-		file: 'public/app/sfn.js'
-	},
-	plugins: [
-		svelte({
-			preprocess: sveltePreprocess({ postcss: true }),
-			// enable run-time checks when not in production
-			dev: isDev,
-			// we'll extract any component CSS out into
-			// a separate file - better for performance
-			css: css => {
-				css.write('public/app/sfn.css');
-			}
-		}),
+  input: 'src/main.js',
+  output: {
+    sourcemap: true,
+    format: 'iife',
+    name: 'app',
+    file: 'public/app/sfn.js',
+  },
+  plugins: [
+    svelte({
+      preprocess: sveltePreprocess({ postcss: true }),
+      // enable run-time checks when not in production
+      dev: !production,
+      // we'll extract any component CSS out into
+      // a separate file - better for performance
+      css: (css) => {
+        css.write('public/app/sfn.css');
+      },
+    }),
 
-		// If you have external dependencies installed from
-		// npm, you'll most likely need these plugins. In
-		// some cases you'll need additional configuration -
-		// consult the documentation for details:
-		// https://github.com/rollup/plugins/tree/master/packages/commonjs
-		resolve({
-			browser: true,
-			dedupe: ['svelte']
-		}),
-		commonjs(),
+    // If you have external dependencies installed from
+    // npm, you'll most likely need these plugins. In
+    // some cases you'll need additional configuration -
+    // consult the documentation for details:
+    // https://github.com/rollup/plugins/tree/master/packages/commonjs
+    resolve({
+      browser: true,
+      dedupe: ['svelte'],
+    }),
+    commonjs(),
 
-		// In dev mode, call `npm run start` once
-		// the bundle has been generated
-		isDev && serve(),
+    // In dev mode, call `npm run start` once
+    // the bundle has been generated
+    !production && serve(),
 
-		// Watch the `public` directory and refresh the
-		// browser on changes when not in production
-		isDev && livereload('public'),
+    // Watch the `public` directory and refresh the
+    // browser on changes when not in production
+    !production && livereload('public'),
 
-		// If we're building for production (npm run build
-		// instead of npm run dev), minify
-		isProd && terser()
-	],
-	watch: {
-		clearScreen: false
-	}
+    // If we're building for production (npm run build
+    // instead of npm run dev), minify
+    production && terser(),
+  ],
+  watch: {
+    clearScreen: false,
+  },
 };
 
 function serve() {
-	let started = false;
+  let started = false;
 
-	return {
-		writeBundle() {
-			if (!started) {
-				started = true;
+  return {
+    writeBundle() {
+      if (!started) {
+        started = true;
 
-				require('child_process').spawn('npm', ['run', 'serve', '--', '--dev'], {
-					stdio: ['ignore', 'inherit', 'inherit'],
-					shell: true
-				});
-			}
-		}
-	};
+        require('child_process').spawn('npm', ['run', 'serve', '--', '--dev'], {
+          stdio: ['ignore', 'inherit', 'inherit'],
+          shell: true,
+        });
+      }
+    },
+  };
 }

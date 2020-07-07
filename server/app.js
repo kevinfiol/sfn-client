@@ -1,5 +1,5 @@
 import config from './config.js';
-import { Application, Snelm } from './deps.js';
+import { Application, Snelm, oakCors } from './deps.js';
 
 const app = new Application();
 const snelm = new Snelm('oak');
@@ -19,6 +19,8 @@ app.use(async (ctx, next) => {
     ctx.response = snelm.snelm(ctx.request, ctx.response);
     await next();
 });
+
+app.use(oakCors());
 
 // Routes
 import router from './router.js';
