@@ -7,7 +7,7 @@ const router = new Router()
     .get('/', IndexController.serverWakeup)
 
     // UserController
-    .get('/user/:identifier', UserController.getUser)
+    .get('/user/getUser/:identifier', UserController.getUser)
 ;
 
 export default router;

@@ -1,11 +1,20 @@
 <script>
     import Tailwind from './Tailwind.svelte';
-    import { current } from './routes';
+    import router from 'page';
+
+    import Layout from './Layout.svelte';
+    import Index from './pages/Index.svelte';
+    import Friends from './pages/Friends.svelte';
+
+    let page;
+    let params;
+
+    router('/', () => page = Index);
+    router('/friends', () => page = Friends);
+
+    router.start();
 </script>
 
-<nav>
-    <a href="/">home</a>
-    <a href="/friends">friends</a>
-</nav>
-
-<svelte:component this={current} />
+<Layout>
+    <svelte:component this={page} params={params || null} />
+</Layout>
