@@ -14,13 +14,13 @@ const SteamService = {
         }
     },
 
-    async getSteamID(identifier) {
-        const endpoint = `${this.url}/app/getSteamID`;
+    async getAllProfiles(identifier) {
+        const endpoint = `${this.url}/app/getAllProfiles`;
 
         try {
             const response = await Request.get(endpoint, { identifier });
             const json = await response.json();
-            return json.steamid;
+            return json;
         } catch(e) {
             throw e;
         }
