@@ -1,4 +1,4 @@
-import nanoid from '../deps.js';
+import nanoid from 'nanoid';
 
 NANOID_LENGTH = 15;
 

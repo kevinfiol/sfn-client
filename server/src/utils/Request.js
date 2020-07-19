@@ -1,6 +1,9 @@
+import fetch from 'node-fetch';
+
 const Request = {
     get(url, params = {}) {
-        return fetch(url + '?' + buildQueryString(params));
+        let query = url + '?' + buildQueryString(params);
+        return fetch(query);
     }
 };
 

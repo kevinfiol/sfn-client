@@ -18,7 +18,7 @@ const SteamService = {
         const endpoint = `${this.url}/app/getAllProfiles`;
 
         try {
-            const response = await Request.get(endpoint, { identifier });
+            const response = await Request.get(endpoint, { steamid: identifier });
             const json = await response.json();
             return json;
         } catch(e) {
