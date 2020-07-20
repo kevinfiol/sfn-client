@@ -1,6 +1,6 @@
-import nanoid from 'nanoid';
+import { nanoid } from 'nanoid';
 
-NANOID_LENGTH = 15;
+const NANOID_LENGTH = 15;
 
 const NanoID = {
     gen() {

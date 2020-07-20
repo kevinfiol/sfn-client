@@ -14,11 +14,35 @@ const SteamService = {
         }
     },
 
+    async getAllSteamCategories() {
+        const endpoint = `${this.url}/app/getAllSteamCategories`;
+
+        try {
+            const response = await Request.get(endpoint);
+            const json = await response.json();
+            return json;
+        } catch(e) {
+            throw e;
+        }
+    },
+
     async getAllProfiles(identifier) {
         const endpoint = `${this.url}/app/getAllProfiles`;
 
         try {
             const response = await Request.get(endpoint, { steamid: identifier });
+            const json = await response.json();
+            return json;
+        } catch(e) {
+            throw e;
+        }
+    },
+
+    async getCommonApps(steamids) {
+        const endpoint = `${this.url}/app/getCommonApps`;
+
+        try {
+            const response = await Request.get(endpoint, { steamids });
             const json = await response.json();
             return json;
         } catch(e) {

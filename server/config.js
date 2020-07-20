@@ -1,9 +1,16 @@
 const config = {
     port: 8080,
     database: {
-        dialect: 'sqlite3',
-        options: {
-            filepath: './sfn.db'
+        client: 'sqlite3',
+        useNullAsDefault: true,
+        connection: {
+            filename: './sfn.db'
+        },
+        migrations: {
+            directory: './db/migrations'
+        },
+        seeds: {
+            directory: './db/seeds'
         }
     },
     services: {
@@ -13,4 +20,4 @@ const config = {
     }
 };
 
-export default config;
+module.exports = config;
