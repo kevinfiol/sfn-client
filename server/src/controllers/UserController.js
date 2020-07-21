@@ -22,34 +22,10 @@ export async function getAllProfiles(req, res) {
     }
 }
 
-// export async function getGamePage(req, res) {
-//     const id = req.params.id;
-    // const sortedIds = steamids.split(',').sort().join(',');
-
-    // let libraryResult = await LibraryResult.query().findOne({ idString: sortedIds });
-    
-    // if (libraryResult !== undefined) {
-    //     // use it
-    // } else {
-    //     const newResultId = NanoID.gen();
-
-    //     try {
-    //         const commonApps = await SteamService.getCommonApps(steamids);
-    //         libraryResult = await LibraryResult.query().insert({
-    //             nanoid: newResultId,
-    //             idString: sortedIds,
-
-    //         });
-    //     } catch(e) {
-    //         throw e;
-    //     }
-
-// }
-
+// 76561197978726907/76561197978726907,76561197961592646,76561197962363601,76561197963689509
 export async function getCommonApps(req, res) {
     const steamid = req.params.steamid;
     const steamids = req.params.steamids;
-
     const sortedIds = steamids.split(',').sort().join(',');
 
     // check if exists
@@ -67,11 +43,11 @@ export async function getCommonApps(req, res) {
             steamapps = await SteamService.getCommonApps(steamids);
             profiles = {}; // should have this by req.body or request it
 
-            libraryResult = await LibraryResult.query().insert({
+            libraryResult = await LibraryResult.query().insertAndFetch({
                 nanoid: nanoid,
-                idString: steamids,
-                profiles: profiles,
-                steamapps: steamapps
+                idString: sortedIds,
+                profiles: JSON.stringify(profiles),
+                steamapps: JSON.stringify(steamapps)
             });
 
             res.json(libraryResult);

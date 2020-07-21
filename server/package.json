@@ -4,7 +4,6 @@
     "dev": "nodemon -r esm run.js",
     "migrate": "knex migrate:latest",
     "rollback": "knex migrate:rollback",
-    "rollback:all": "knex migrate:rollback --all",
     "migrate:make": "knex migrate:make",
     "seed:run": "knex seed:run",
     "seed:make": "knex seed:make"
