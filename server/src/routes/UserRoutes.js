@@ -5,6 +5,6 @@ const router = express.Router();
 router.get('/getAllSteamCategories', UserController.getAllSteamCategories);
 router.get('/getAllProfiles/:identifier', UserController.getAllProfiles);
 router.get('/getLibraryResult/:nanoid', UserController.getLibraryResult);
-router.get('/getCommonApps/:steamid/:steamids', UserController.getCommonApps);
+router.post('/getCommonApps/:steamid/:steamids', UserController.getCommonApps);
 
 export default router;

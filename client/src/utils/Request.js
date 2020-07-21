@@ -1,5 +1,3 @@
-import fetch from 'node-fetch';
-
 const Request = {
     get(url, params = {}) {
         let query = url + '?' + buildQueryString(params);
