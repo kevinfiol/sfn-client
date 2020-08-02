@@ -1,7 +1,7 @@
 {
   "license": "MIT",
   "scripts": {
-    "dev": "nodemon -r esm run.js",
+    "dev": "node-dev -r esm run.js",
     "migrate": "knex migrate:latest",
     "rollback": "knex migrate:rollback",
     "migrate:make": "knex migrate:make",
@@ -9,19 +9,20 @@
     "seed:make": "knex seed:make"
   },
   "dependencies": {
+    "@polka/send-type": "^0.5.2",
     "cors": "^2.8.5",
-    "express": "^4.17.1",
     "helmet": "^3.23.3",
     "knex": "^0.21.2",
     "nanoid": "^3.1.10",
     "node-fetch": "^2.6.0",
     "objection": "^2.2.1",
     "pg": "^8.3.0",
+    "polka": "1.0.0-next.11",
     "ramda": "^0.27.0",
     "sqlite3": "^5.0.0"
   },
   "devDependencies": {
     "esm": "^3.2.25",
-    "nodemon": "^2.0.4"
+    "node-dev": "^5.1.0"
   }
 }

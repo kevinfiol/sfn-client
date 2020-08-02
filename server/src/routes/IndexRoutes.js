@@ -1,7 +1,7 @@
-import express from 'express';
+import polka from 'polka';
 import * as IndexController from '../controllers/IndexController.js';
 
-const router = express.Router();
+const router = polka();
 router.get('/', IndexController.serverWakeup);
 
 export default router;

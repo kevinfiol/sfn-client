@@ -11,5 +11,5 @@ export async function serverWakeup(req, res) {
         response['message'] = 'steam-serv did not respond';
     }
 
-    res.json(response);
+    res.send(200, response);
 }

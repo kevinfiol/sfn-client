@@ -1,7 +1,7 @@
-import express from 'express';
+import polka from 'polka';
 import * as UserController from '../controllers/UserController.js';
 
-const router = express.Router();
+const router = polka();
 router.get('/getAllSteamCategories', UserController.getAllSteamCategories);
 router.get('/getAllProfiles/:identifier', UserController.getAllProfiles);
 router.get('/getLibraryResult/:nanoid', UserController.getLibraryResult);

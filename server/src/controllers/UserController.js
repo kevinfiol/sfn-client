@@ -5,7 +5,7 @@ import { SteamService } from '../container.js';
 export async function getAllSteamCategories(req, res) {
     try {
         const categories = await SteamService.getAllSteamCategories();
-        res.json(categories);
+        res.send(200, categories);
     } catch(e) {
         throw e;
     }
@@ -16,7 +16,7 @@ export async function getAllProfiles(req, res) {
 
     try {
         const profiles = await SteamService.getAllProfiles(identifier);
-        res.json(profiles);
+        res.send(200, profiles);
     } catch(e) {
         throw e;
     }
@@ -33,7 +33,7 @@ export async function getCommonApps(req, res) {
     libraryResult = await LibraryResult.query().findOne({ idString: sortedIds });
 
     if (libraryResult !== undefined) {
-        res.json(libraryResult);
+        res.send(200, libraryResult);
     } else {
         let profiles;
         let steamapps;
@@ -50,7 +50,7 @@ export async function getCommonApps(req, res) {
                 steamapps: JSON.stringify(steamapps)
             });
 
-            res.json(libraryResult);
+            res.send(200, libraryResult);
         } catch(e) {
             throw e;
         }
@@ -69,8 +69,8 @@ export async function getLibraryResult(req, res) {
     }
 
     if (libraryResult !== undefined) {
-        res.json(libraryResult);
+        res.send(200, libraryResult);
     } else {
-        res.json({ error: 'ID not found.' });
+        res.send(200, { error: 'ID not found.' });
     }
 }
