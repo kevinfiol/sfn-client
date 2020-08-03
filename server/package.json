@@ -1,7 +1,7 @@
 {
   "license": "MIT",
   "scripts": {
-    "dev": "node-dev -r esm run.js",
+    "dev": "node-dev run.js",
     "migrate": "knex migrate:latest",
     "rollback": "knex migrate:rollback",
     "migrate:make": "knex migrate:make",
@@ -22,7 +22,6 @@
     "sqlite3": "^5.0.0"
   },
   "devDependencies": {
-    "esm": "^3.2.25",
     "node-dev": "^5.1.0"
   }
 }

@@ -1,7 +1,7 @@
-import polka from 'polka';
-import send from '@polka/send-type';
-import helmet from 'helmet';
-import cors from 'cors';
+const polka = require('polka');
+const send = require('@polka/send-type');
+const helmet = require('helmet');
+const cors = require('cors');
 
 const app = polka();
 
@@ -14,10 +14,10 @@ app.use((_, res, next) => {
 });
 
 // routes
-import IndexRoutes from './routes/IndexRoutes.js';
-import UserRoutes from './routes/UserRoutes.js';
+const IndexRoutes = require('./routes/IndexRoutes.js');
+const UserRoutes = require('./routes/UserRoutes.js');
 
 app.use('/user', UserRoutes);
 app.use('/', IndexRoutes);
 
-export default app;
+module.exports = app;

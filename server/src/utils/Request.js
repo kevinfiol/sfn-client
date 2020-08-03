@@ -1,4 +1,4 @@
-import fetch from 'node-fetch';
+const fetch = require('node-fetch');
 
 const Request = {
     get(url, params = {}) {
@@ -15,7 +15,7 @@ const Request = {
     }
 };
 
-export default Request;
+module.exports = Request;
 
 // https://github.com/MithrilJS/mithril.js/blob/next/querystring/build.js
 function buildQueryString(object) {

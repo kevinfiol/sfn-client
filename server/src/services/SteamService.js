@@ -1,4 +1,4 @@
-import Request from '../utils/Request.js';
+const Request = require('../utils/Request.js');
 
 const SteamService = {
     init(url) {
@@ -51,4 +51,4 @@ const SteamService = {
     }
 };
 
-export default SteamService;
+module.exports = SteamService;

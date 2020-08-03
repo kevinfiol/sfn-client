@@ -1,4 +1,4 @@
-import config from './config.js';
-import app from './src/app.js';
+const config = require('./config.js');
+const app = require('./src/app.js');
 
 app.listen(config.port, () => console.log(`Listening on ${config.port}...`));

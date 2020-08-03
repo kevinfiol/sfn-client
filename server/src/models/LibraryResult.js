@@ -1,4 +1,4 @@
-import { Model } from '../container.js';
+const { Model } = require('../container.js');
 
 class LibraryResult extends Model {
     static get tableName() {
@@ -6,4 +6,4 @@ class LibraryResult extends Model {
     }
 }
 
-export default LibraryResult;
+module.exports = LibraryResult;

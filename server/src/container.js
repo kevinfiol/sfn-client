@@ -1,7 +1,7 @@
-import config from '../config.js';
-import { Model } from '../orm.js';
+const config = require('../config.js');
+const { Model } = require('../orm.js');
 
-import SteamService from './services/SteamService.js';
+const SteamService = require('./services/SteamService.js');
 SteamService.init(config.services.steam_service.url);
 
-export { Model, SteamService };
+module.exports = { Model, SteamService };

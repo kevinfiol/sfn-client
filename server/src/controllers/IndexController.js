@@ -1,6 +1,6 @@
-import { SteamService } from '../container.js';
+const { SteamService } = require('../container.js');
 
-export async function serverWakeup(req, res) {
+exports.serverWakeup = async function(_, res) {
     const response = {};
 
     try {
@@ -12,4 +12,4 @@ export async function serverWakeup(req, res) {
     }
 
     res.send(200, response);
-}
+};

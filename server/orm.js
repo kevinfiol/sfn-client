@@ -1,8 +1,8 @@
-import { Model } from 'objection';
-import Knex from 'knex';
-import config from './config.js';
+const { Model } = require('objection');
+const Knex = require('knex');
+const config = require('./config.js');
 
 const knex = Knex(config.database);
 Model.knex(knex);
 
-export { Model };
+module.exports = { Model };

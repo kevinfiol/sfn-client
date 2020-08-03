@@ -1,17 +1,17 @@
-import LibraryResult from '../models/LibraryResult.js';
-import NanoID from '../utils/NanoID.js';
-import { SteamService } from '../container.js';
+const LibraryResult = require('../models/LibraryResult.js');
+const NanoID = require('../utils/NanoID.js');
+const { SteamService } = require('../container.js');
 
-export async function getAllSteamCategories(req, res) {
+exports.getAllSteamCategories = async function(_, res) {
     try {
         const categories = await SteamService.getAllSteamCategories();
         res.send(200, categories);
     } catch(e) {
         throw e;
     }
-}
+};
 
-export async function getAllProfiles(req, res) {
+exports.getAllProfiles = async function(req, res) {
     const identifier = req.params.identifier;
 
     try {
@@ -20,10 +20,10 @@ export async function getAllProfiles(req, res) {
     } catch(e) {
         throw e;
     }
-}
+};
 
 // 76561197978726907/76561197978726907,76561197961592646,76561197962363601,76561197963689509
-export async function getCommonApps(req, res) {
+exports.getCommonApps = async function(req, res) {
     const steamid = req.params.steamid;
     const steamids = req.params.steamids;
     const sortedIds = steamids.split(',').sort().join(',');
@@ -55,9 +55,9 @@ export async function getCommonApps(req, res) {
             throw e;
         }
     }
-}
+};
 
-export async function getLibraryResult(req, res) {
+exports.getLibraryResult = async function(req, res) {
     const nanoid = req.params.nanoid;
     
     let libraryResult;
@@ -73,4 +73,4 @@ export async function getLibraryResult(req, res) {
     } else {
         res.send(200, { error: 'ID not found.' });
     }
-}
+};
