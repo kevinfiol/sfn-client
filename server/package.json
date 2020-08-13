@@ -2,6 +2,7 @@
   "license": "MIT",
   "scripts": {
     "dev": "node-dev run.js",
+    "debug": "node-dev --inspect run.js",
     "migrate": "knex migrate:latest",
     "rollback": "knex migrate:rollback",
     "migrate:make": "knex migrate:make",

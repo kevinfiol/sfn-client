@@ -1,20 +1,26 @@
 <script>
+    // deps
     import Tailwind from './Tailwind.svelte';
     import router from 'page';
 
+    // pages
     import Layout from './Layout.svelte';
     import Index from './pages/Index.svelte';
-    import Friends from './pages/Friends.svelte';
+    import Library from './pages/Library.svelte';
 
+    // state
+    import { state, actions } from './state/container.js';
+
+    // router
     let page;
     let params;
 
     router('/', () => page = Index);
-    router('/friends', () => page = Friends);
+    router('/lib', () => page = Library);
 
     router.start();
 </script>
 
 <Layout>
-    <svelte:component this={page} params={params || null} />
+    <svelte:component this={page} params={params || null} {state} {actions} />
 </Layout>
