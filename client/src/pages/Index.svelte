@@ -24,11 +24,10 @@
 
     function stageFriend(friend) {
         actions.stageFriend(friend);
-        console.log(state);
     }
 
-    function unstageFriend({ steamid }) {
-        console.log(steamid);
+    function unstageFriend(steamid) {
+        actions.unstageFriend(steamid);
     }
 
     async function getAllProfiles() {
@@ -40,8 +39,23 @@
             actions.set('profiles', profiles);
             actions.set('user', profiles.user);
             actions.set('steamid', profiles.user.steamid);
-
             return profiles;
+        } catch(e) {
+            throw e;
+        }
+    }
+
+    async function getCommonApps() {
+        const steamid = $state.steamid;
+
+        const steamids = [
+            steamid,
+            ...Object.values($state.stagedFriends).map(f => f.steamid)
+        ].join(',');
+
+        try {
+            const library = await sfn.getCommonApps({ steamid, steamids });
+            console.log(library);
         } catch(e) {
             throw e;
         }
@@ -56,6 +70,10 @@
     </Button>
 </form>
 
+<Button on:click={ getCommonApps }>
+    get apps
+</Button>
+
 {#if hasFetched}
     {#await promise}
         <p>waiting...</p>
@@ -66,7 +84,7 @@
         </div>
 
         <div class="my-8">
-            <h2 class="text-2xl">your friends:</h2>
+            <h2 class="text-2xl">select your friends:</h2>
             <div class="flex flex-wrap">
                 {#each $state.profiles.friends as friend}
                     <div class="w-full sm:w-1/2 md:w-1/3 p-2">
@@ -74,7 +92,7 @@
                             user={friend}
                             disabled={selectedCount >= 5 && !(friend.steamid in $state.stagedFriends)}
                             selected={friend.steamid in $state.stagedFriends}
-                            selectable={true}
+                            selectable={selectedCount < 5 || (friend.steamid in $state.stagedFriends)}
                             on:click={() => {
                                 if (friend.steamid in $state.stagedFriends) {
                                     unstageFriend(friend.steamid);

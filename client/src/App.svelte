@@ -10,7 +10,7 @@
 
     // state
     import { state, actions } from './state/container.js';
-
+    state.subscribe(console.log);
     // router
     let page;
     let params;

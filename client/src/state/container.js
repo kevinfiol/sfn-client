@@ -1,4 +1,4 @@
-import { writable } from 'svelte/store';
+import Store from './Store.js';
 import Actions from './Actions.js';
 
 const initialState = {
@@ -8,11 +8,7 @@ const initialState = {
     stagedFriends: {}
 };
 
-let state;
-const store = writable(initialState);
-state = store;
-// store.subscribe(currentState => state = currentState);
-
-const actions = Actions(store);
+const state = Store(initialState);
+const actions = Actions(state);
 
 export { initialState, state, actions };

@@ -1,17 +1,14 @@
 const Actions = ({ _, update }) => ({
-    set: (key, val) => update(s => {
-        s[key] = val;
-        return s;
+    set: (key, val) => update({
+        [key]: val
     }),
 
-    stageFriend: friend => update(s => {
-        s.stagedFriends[friend.steamid] = friend;
-        return s;
+    stageFriend: friend => update({
+        stagedFriends: { [friend.steamid]: friend }
     }),
 
-    unstageFriend: steamid => update(s => {
-        delete s.stagedFriends[steamid];
-        return s;
+    unstageFriend: steamid => update({
+        stagedFriends: { [steamid]: undefined }
     })
 });
 

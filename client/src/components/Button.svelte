@@ -1,5 +1,4 @@
 <script>
-    export let onclick = undefined;
     export let attrs;
 </script>
 
@@ -22,6 +21,6 @@
     }
 </style>
 
-<button {...attrs} on:click={onclick || null}>
+<button {...attrs} on:click>
     <slot></slot>
 </button>
