@@ -10,16 +10,25 @@
     export let state;
     export let actions;
 
-    console.log(data);
-
     let promise;
     let hasFetched = false;
     let identifier = '';
+    let selectedCount = 0;
+
     $: formReady = identifier.trim().length > 0;
 
     function handleSubmit() {
         hasFetched = true;
         promise = getAllProfiles();
+    }
+
+    function stageFriend(friend) {
+        actions.stageFriend(friend);
+        console.log(state);
+    }
+
+    function unstageFriend({ steamid }) {
+        console.log(steamid);
     }
 
     async function getAllProfiles() {
@@ -40,7 +49,7 @@
 </script>
 
 <form on:submit|preventDefault={handleSubmit}>
-    <label>enter steamid or alias:</label>
+    <label>enter your steamid or alias:</label>
     <TextInput bind:value={identifier} />
     <Button attrs={{ type: 'submit', disabled: !formReady }}>
         get friends
@@ -51,19 +60,34 @@
     {#await promise}
         <p>waiting...</p>
     {:then}
-        <div>
-            <h2 class="text-2xl">you are:</h2>
-            <Card user={state.user} />
+        <div class="my-6">
+            <h2 class="text-2xl">you:</h2>
+            <Card user={$state.user} />
+        </div>
 
-            <h2 class="text-2xl">your friends are:</h2>
+        <div class="my-8">
+            <h2 class="text-2xl">your friends:</h2>
             <div class="flex flex-wrap">
-                {#each state.profiles.friends as friend}
+                {#each $state.profiles.friends as friend}
                     <div class="w-full sm:w-1/2 md:w-1/3 p-2">
-                        <Card user={friend} />
+                        <Card
+                            user={friend}
+                            disabled={selectedCount >= 5 && !(friend.steamid in $state.stagedFriends)}
+                            selected={friend.steamid in $state.stagedFriends}
+                            selectable={true}
+                            on:click={() => {
+                                if (friend.steamid in $state.stagedFriends) {
+                                    unstageFriend(friend.steamid);
+                                    selectedCount -= 1;
+                                } else if (selectedCount < 5) {
+                                    stageFriend(friend);
+                                    selectedCount += 1;
+                                }
+                            }}
+                        />
                     </div>
                 {/each}
             </div>
-
         </div>
     {:catch error}
         <p class="red">{error.message}</p>

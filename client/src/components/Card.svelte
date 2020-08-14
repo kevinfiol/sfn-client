@@ -1,23 +1,38 @@
 <script>
+    /**
+    * This component uses Event Forwarding for on:click
+    **/
     export let user = {
         avatar: '/assets/profile.png',
         personaname: 'User',
         profileurl: 'https://steamcommunity.com',
         steamid: '123'
     };
+
+    export let selected = false;
+    export let selectable = false;
+    export let disabled = false;
 </script>
 
 <style>
     .card {
-        @apply border border-gray-700 max-w-xs rounded break-normal truncate shadow-xl cursor-pointer my-2;
+        @apply border border-gray-700 max-w-xs rounded break-normal truncate shadow-xl  my-2;
         transition: all 0.1s ease;
     }
 
-    .card:hover {
+    .card.selectable {
+        @apply cursor-pointer;
+    }
+
+    .card.disabled {
+        @apply opacity-25;
+    }
+
+    .card.selectable:hover {
         @apply bg-gray-800;
     }
 
-    .card:active {
+    .card.selectable:active, .card.selected {
         @apply bg-teal-700 outline-none shadow-outline;
     }
 
@@ -26,7 +41,13 @@
     }
 </style>
 
-<div class="card">
+<div
+    class="card"
+    class:disabled={disabled}
+    class:selectable={selectable}
+    class:selected={selected}
+    on:click
+>
     <div class="flex flex-wrap px-6 py-4">
         <div class="w-1/3">
             <img class="rounded" src="{user.avatar}" alt="{user.personaname}">
