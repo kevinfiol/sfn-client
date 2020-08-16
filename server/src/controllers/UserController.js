@@ -25,28 +25,26 @@ exports.getAllProfiles = async function(req, res) {
 // 76561197978726907/76561197978726907,76561197961592646,76561197962363601,76561197963689509
 exports.getCommonApps = async function(req, res) {
     debugger;
-    const steamid = req.params.steamid;
-    const steamids = req.params.steamids;
-    const sortedIds = steamids.split(',').sort().join(',');
+    const profiles = req.body.profiles;
+    if (!profiles) throw new Error('Invalid profiles object in POST body');
+    const idString = profiles.steamids.sort().join(',');
 
     // check if exists
     let libraryResult;
-    libraryResult = await LibraryResult.query().findOne({ idString: sortedIds });
+    libraryResult = await LibraryResult.query().findOne({ idString: idString });
 
     if (libraryResult !== undefined) {
         res.send(200, libraryResult);
     } else {
-        let profiles;
         let steamapps;
         const nanoid = NanoID.gen();
 
         try {
-            steamapps = await SteamService.getCommonApps(steamids);
-            profiles = {}; // should have this by req.body or request it
+            steamapps = await SteamService.getCommonApps(idString);
 
             libraryResult = await LibraryResult.query().insertAndFetch({
                 nanoid: nanoid,
-                idString: sortedIds,
+                idString: idString,
                 profiles: JSON.stringify(profiles),
                 steamapps: JSON.stringify(steamapps)
             });
@@ -59,7 +57,8 @@ exports.getCommonApps = async function(req, res) {
 };
 
 exports.getLibraryResult = async function(req, res) {
-    const nanoid = req.params.nanoid;
+    debugger;
+    const nanoid = req.body.nanoid;
     
     let libraryResult;
 

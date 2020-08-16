@@ -11,16 +11,23 @@
     // state
     import { state, actions } from './state/container.js';
     state.subscribe(console.log);
+
     // router
     let page;
     let params;
 
     router('/', () => page = Index);
-    router('/lib', () => page = Library);
+    router('/lib/:id',
+        (ctx, next) => {
+            params = ctx.params;
+            next();
+        }, 
+        () => page = Library
+    );
 
     router.start();
 </script>
 
 <Layout>
-    <svelte:component this={page} params={params || null} {state} {actions} />
+    <svelte:component this={page} params={params} {state} {actions} />
 </Layout>

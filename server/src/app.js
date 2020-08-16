@@ -9,7 +9,6 @@ const app = polka();
 // middleware
 app.use(helmet());
 app.use(cors());
-console.log(parse);
 app.use(parse.json());
 app.use((_, res, next) => {
     res.send = send.bind(null, res);
