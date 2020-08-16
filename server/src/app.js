@@ -1,5 +1,6 @@
 const polka = require('polka');
 const send = require('@polka/send-type');
+const parse = require('@polka/parse');
 const helmet = require('helmet');
 const cors = require('cors');
 
@@ -8,6 +9,8 @@ const app = polka();
 // middleware
 app.use(helmet());
 app.use(cors());
+console.log(parse);
+app.use(parse.json());
 app.use((_, res, next) => {
     res.send = send.bind(null, res);
     next();

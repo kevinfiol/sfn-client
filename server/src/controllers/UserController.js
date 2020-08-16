@@ -24,6 +24,7 @@ exports.getAllProfiles = async function(req, res) {
 
 // 76561197978726907/76561197978726907,76561197961592646,76561197962363601,76561197963689509
 exports.getCommonApps = async function(req, res) {
+    debugger;
     const steamid = req.params.steamid;
     const steamids = req.params.steamids;
     const sortedIds = steamids.split(',').sort().join(',');

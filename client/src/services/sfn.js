@@ -16,11 +16,11 @@ const sfn = {
         }
     },
 
-    async getCommonApps({ steamid, steamids }) {
-        const endpoint = `${url}/user/getCommonApps/${steamid}/${steamids}`;
+    async getCommonApps(profiles) {
+        const endpoint = `${url}/user/getCommonApps`;
         console.log(endpoint);
         try {
-            const response = await Request.post(endpoint);
+            const response = await Request.post(endpoint, { profiles });
             const library = await response.json();
             console.log(library);
             return library;

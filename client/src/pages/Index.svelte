@@ -46,15 +46,19 @@
     }
 
     async function getCommonApps() {
-        const steamid = $state.steamid;
-
         const steamids = [
-            steamid,
+            $state.steamid,
             ...Object.values($state.stagedFriends).map(f => f.steamid)
-        ].join(',');
+        ];
+
+        const profiles = {
+            steamids: steamids,
+            user: $state.user,
+            friends: $state.profiles.friends.filter(f => steamids.includes(f.steamid))
+        };
 
         try {
-            const library = await sfn.getCommonApps({ steamid, steamids });
+            const library = await sfn.getCommonApps(profiles);
             console.log(library);
         } catch(e) {
             throw e;

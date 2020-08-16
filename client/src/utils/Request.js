@@ -4,7 +4,7 @@ const Request = {
         return fetch(query);
     },
 
-    post(url, body = '') {
+    post(url, body = {}) {
         return fetch(url, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json;charset=utf-8' },
