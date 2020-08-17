@@ -33,14 +33,15 @@ exports.getCommonApps = async function(req, res) {
     let libraryResult;
     libraryResult = await LibraryResult.query().findOne({ idString: idString });
 
-    if (libraryResult !== undefined) {
-        res.send(200, libraryResult);
-    } else {
-        let steamapps;
-        const nanoid = NanoID.gen();
+    // get categories
+    const categories = await SteamService.getAllSteamCategories();
 
+    if (libraryResult !== undefined) {
+        res.send(200, { libraryResult, categories });
+    } else {
         try {
-            steamapps = await SteamService.getCommonApps(idString);
+            const steamapps = await SteamService.getCommonApps(idString);
+            const nanoid = NanoID.gen();
 
             libraryResult = await LibraryResult.query().insertAndFetch({
                 nanoid: nanoid,
@@ -49,7 +50,7 @@ exports.getCommonApps = async function(req, res) {
                 steamapps: JSON.stringify(steamapps)
             });
 
-            res.send(200, libraryResult);
+            res.send(200, { libraryResult, categories });
         } catch(e) {
             throw e;
         }
@@ -59,18 +60,17 @@ exports.getCommonApps = async function(req, res) {
 exports.getLibraryResult = async function(req, res) {
     debugger;
     const nanoid = req.body.nanoid;
-    
-    let libraryResult;
 
     try {
-        libraryResult = await LibraryResult.query().findOne({ nanoid });
-    } catch(e) {
-        throw e;
-    }
+        const libraryResult = await LibraryResult.query().findOne({ nanoid });
 
-    if (libraryResult !== undefined) {
-        res.send(200, libraryResult);
-    } else {
-        res.send(200, { error: 'ID not found.' });
+        if (libraryResult !== undefined) {
+            const categories = await SteamService.getAllSteamCategories();
+            res.send(200, { libraryResult, categories });
+        } else {
+            throw new Error('ID not found.');
+        }
+    } catch(e) {
+        res.send(200, { error: e.message });
     }
 };

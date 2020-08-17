@@ -53,7 +53,7 @@
             <img class="rounded" src="{user.avatar}" alt="{user.personaname}">
         </div>
         <div class="w-2/3">
-            <div class="font-bold text-xl my-2">{user.personaname}</div>
+            <div class="font-bold text-xl px-2 my-2">{user.personaname}</div>
         </div>
     </div>
 </div>
