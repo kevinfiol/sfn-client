@@ -31,7 +31,7 @@ exports.getCommonApps = async function(req, res) {
 
     // check if exists
     let libraryResult;
-    libraryResult = await LibraryResult.query().findOne({ idString: idString });
+    libraryResult = await LibraryResult.query().findOne({ idString });
 
     // get categories
     const categories = await SteamService.getAllSteamCategories();

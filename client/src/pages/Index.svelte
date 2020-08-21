@@ -53,13 +53,17 @@
 
         const profiles = {
             steamids: steamids,
-            user: $state.user,
-            friends: $state.profiles.friends.filter(f => steamids.includes(f.steamid))
+            players: [
+                $state.user,
+                ...$state.profiles.friends.filter(f => steamids.includes(f.steamid))
+            ]
         };
 
         try {
-            const library = await sfn.getCommonApps(profiles);
-            console.log(library);
+            const data = await sfn.getCommonApps(profiles);
+            actions.set('libraryResult', data.libraryResult);
+            actions.set('categories', data.categories);
+            page(`/lib/${data.libraryResult.nanoid}`);
         } catch(e) {
             throw e;
         }

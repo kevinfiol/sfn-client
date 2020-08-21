@@ -5,7 +5,9 @@ const initialState = {
     steamid: null,
     user: null,
     profiles: null,
-    stagedFriends: {}
+    stagedFriends: {},
+    libraryResult: null,
+    categories: null
 };
 
 const state = Store(initialState);
