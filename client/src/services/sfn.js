@@ -3,6 +3,15 @@ import Request from '../utils/Request.js';
 const url = 'http://localhost:8080';
 
 const sfn = {
+    async serverWakeup() {
+        const endpoint = `${url}/`;
+        try {
+            await Request.get(endpoint);
+        } catch(e) {
+            throw e;
+        }
+    },
+
     async getAllProfiles(identifier) {
         const endpoint = `${url}/user/getAllProfiles/${identifier}`;
 
