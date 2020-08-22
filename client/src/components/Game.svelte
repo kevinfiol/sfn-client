@@ -1,25 +1,55 @@
 <script>
     export let game;
+
+    let platformText = Object.entries(game.platforms)
+        .reduce((acc, cur) => {
+            // cur[0] windows, cur[1] true/false
+            if (cur[1])
+                return acc === '' ? cur[0] : `${acc} / ${cur[0]}`;
+            else
+                return acc;
+        }, '')
+    ;
 </script>
 
 <style>
     .card {
-        @apply border border-gray-700 max-w-xs rounded break-normal truncate shadow-xl  my-2;
+        @apply border border-gray-700 max-w-sm rounded overflow-hidden shadow-xl my-2 min-h-full;
         transition: all 0.1s ease;
     }
 
+    .card:hover {
+        @apply bg-gray-800;
+    }
+
+    .card:active {
+        @apply bg-teal-700 outline-none shadow-outline;
+    }
+
     .card img {
-        @apply shadow-lg border-gray-500 border;
+        @apply w-full;
+    }
+
+    .title {
+        @apply font-bold text-lg mb-2;
+    }
+
+    .platforms {
+        @apply opacity-50;
     }
 </style>
 
-<div class="card">
-    <div class="flex flex-wrap px-6 py-4">
-        <div class="w-1/3">
-            <img class="rounded" src="{game.header_image}" alt="{game.name}">
-        </div>
-        <div class="w-2/3">
-            <div class="font-bold px-2 my-2">{game.name}</div>
+<a href="{`https://store.steampowered.com/app/${game.steam_appid}`}">
+    <div class="card" title={game.name}>
+        <img src="{game.header_image}" alt="{game.name}">
+        <div class="px-6 py-4">
+            <h2 class="title">
+                {game.name}
+            </h2>
+
+            <small class="platforms">
+                {platformText}
+            </small>
         </div>
     </div>
-</div>
+</a>

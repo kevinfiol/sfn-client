@@ -1,7 +1,7 @@
 <script>
     import TextInput from '../components/TextInput.svelte';
     import Button from '../components/Button.svelte';
-    import Card from '../components/Card.svelte';
+    import UserCard from '../components/UserCard.svelte';
 
     import data from '../../tests/data/profiles.json';
     import page from 'page';
@@ -88,7 +88,7 @@
     {:then}
         <div class="my-6">
             <h2 class="text-2xl">you:</h2>
-            <Card user={$state.user} />
+            <UserCard user={$state.user} />
         </div>
 
         <div class="my-8">
@@ -96,7 +96,7 @@
             <div class="flex flex-wrap">
                 {#each $state.profiles.friends as friend}
                     <div class="w-full sm:w-1/2 md:w-1/3 p-2">
-                        <Card
+                        <UserCard
                             user={friend}
                             disabled={selectedCount >= 5 && !(friend.steamid in $state.stagedFriends)}
                             selected={friend.steamid in $state.stagedFriends}

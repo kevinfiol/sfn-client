@@ -1,13 +1,12 @@
 <script>
     import { onMount }  from 'svelte';
     import sfn from '../services/sfn.js';
-    import Card from '../components/Card.svelte';
+    import UserCard from '../components/UserCard.svelte';
     import Game from '../components/Game.svelte';
     import Checkbox from '../components/Checkbox.svelte';
     import Radio from '../components/Radio.svelte';
 
     export let params;
-
     export let state;
     export let actions;
 
@@ -15,9 +14,39 @@
     let promise;
     let hasFetched = false;
 
-    let games;
+    let games = [];
     let players;
     let categories;
+    let enablePlatformFilter = false;
+    let platform = '';
+    let selectedCategories = [];
+
+    $: filteredGames = games.filter(game => {
+        if (enablePlatformFilter && platform !== '' && platform !== undefined)
+            return game.platforms[platform];
+
+        if (selectedCategories.length < 1 || selectedCategories.length === Object.keys(categories).length)
+            return true;
+
+        const categoryChecked = game.categories.find(c => selectedCategories.includes(c));
+        return categoryChecked !== undefined;
+    });
+
+    onMount(async () => {
+        // check if already exists in state, otherwise...
+        // could use a Promise.resolve to get from existing state
+        hasFetched = true;
+        promise = getLibraryResult();
+    });
+
+    function onCategoryCheck({ target }, id) {
+        id = parseInt(id);
+
+        if (target.checked)
+            selectedCategories = [...selectedCategories, parseInt(id)];
+        else
+            selectedCategories = selectedCategories.filter(c => c !== id);
+    }
 
     async function getLibraryResult() {
         try {
@@ -31,6 +60,7 @@
             } else {
                 result = await sfn.getLibraryResult(id);
             }
+
             console.log(result);
             games = result.libraryResult.steamapps;
             players = result.libraryResult.profiles.players;
@@ -39,15 +69,6 @@
             throw e;
         }
     }
-
-    onMount(async () => {
-        console.log(state);
-
-        // check if already exists in state, otherwise...
-        // could use a Promise.resolve to get from existing state
-        hasFetched = true;
-        promise = getLibraryResult();
-    });
 </script>
 
 {#if hasFetched}
@@ -59,18 +80,18 @@
             <div class="flex flex-wrap">
                 {#each players as player}
                     <div class="w-full sm:w-1/2 md:w-1/4 p-2">
-                        <Card user={player} />
+                        <UserCard user={player} />
                     </div>
                 {/each}
             </div>
         </div>
 
         <div class="my-6">
-            <Checkbox data={1} label={'enable platform filter?'} />
+            <Checkbox label={'enable platform filter?'} bind:checked={enablePlatformFilter} />
             <br />
-            <Radio name={'platform'} data={'w'} label={'windows'} />
-            <Radio name={'platform'} data={'l'} label={'linux'} />
-            <Radio name={'platform'} data={'m'} label={'mac'} />
+            <Radio bind:group={platform} name={'platform'} label={'windows'} disabled={!enablePlatformFilter} />
+            <Radio bind:group={platform} name={'platform'} label={'linux'} disabled={!enablePlatformFilter} />
+            <Radio bind:group={platform} name={'platform'} label={'mac'} disabled={!enablePlatformFilter} />
         </div>
 
         <div class="my-6">
@@ -78,17 +99,21 @@
             <div class="flex flex-wrap">
                 {#each Object.entries(categories) as [id, label]}
                     <div class="w-full sm:w-1/2 md:w-1/4 p-1">
-                        <Checkbox data={id} label={label} />
+                        <Checkbox
+                            data={id}
+                            label={label}
+                            on:change={e => onCategoryCheck(e, id)}
+                        />
                     </div>
                 {/each}
             </div>
         </div>
 
         <div class="my-6">
-            <h2 class="text-2xl">games:</h2>
+            <h2 class="text-2xl">{filteredGames.length} games:</h2>
             <div class="flex flex-wrap">
-                {#each games as game}
-                    <div class="w-full sm:w-1/2 md:w-1/4 p-2">
+                {#each filteredGames as game (game.steam_appid)}
+                    <div class="w-full sm:w-1/2 md:w-1/3 lg:w-1/4 p-2">
                         <Game {game} />
                     </div>
                 {/each}

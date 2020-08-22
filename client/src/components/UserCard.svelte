@@ -1,7 +1,4 @@
 <script>
-    /**
-    * This component uses Event Forwarding for on:click
-    **/
     export let user = {
         avatar: '/assets/profile.png',
         personaname: 'User',

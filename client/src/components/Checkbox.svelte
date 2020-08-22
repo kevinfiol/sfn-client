@@ -1,6 +1,6 @@
 <script>
     export let label;
-    export let data;
+    export let checked = undefined;
 </script>
 
 <style>
@@ -10,6 +10,13 @@
 </style>
 
 <label for="{label}" class="p-1">
-    <input type="checkbox" class="mr-1 leading-tight" {data} id="{label}" name="{label}" >
+    <input
+        type="checkbox"
+        class="mr-1 leading-tight"
+        id="{label}"
+        name="{label}"
+        on:change
+        bind:checked={checked}
+    >
     <span class="text-sm">{label}</span>
 </label>

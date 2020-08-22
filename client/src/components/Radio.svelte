@@ -1,7 +1,9 @@
 <script>
     export let name;
     export let label;
-    export let data;
+
+    export let group = undefined;
+    export let disabled = false;
 </script>
 
 <style>
@@ -11,6 +13,14 @@
 </style>
 
 <label for="{label}" class="p-1">
-    <input type="radio" class="mr-1 leading-tight" {data} id="{label}" name="{name}" >
+    <input
+        type="radio"
+        class="mr-1 leading-tight"
+        id="{label}"
+        value="{label}"
+        name="{name}"
+        {disabled}
+        bind:group={group}
+    >
     <span class="text-sm">{label}</span>
 </label>
