@@ -25,7 +25,7 @@
         if (enablePlatformFilter && platform !== '' && platform !== undefined)
             return game.platforms[platform];
 
-        if (selectedCategories.length < 1 || selectedCategories.length === Object.keys(categories).length)
+        if (selectedCategories.length < 1 || selectedCategories.length === categories.length)
             return true;
 
         const categoryChecked = game.categories.find(c => selectedCategories.includes(c));
@@ -61,7 +61,6 @@
                 result = await sfn.getLibraryResult(id);
             }
 
-            console.log(result);
             games = result.libraryResult.steamapps;
             players = result.libraryResult.profiles.players;
             categories = result.categories;
@@ -97,8 +96,8 @@
         <div class="my-6">
             <h3 class="text-xl">categories:</h3>
             <div class="flex flex-wrap">
-                {#each Object.entries(categories) as [id, label]}
-                    <div class="w-full sm:w-1/2 md:w-1/4 p-1">
+                {#each categories as [id, label]}
+                    <div class="w-full sm:w-1/2 md:w-1/3 lg:w-1/4 p-1">
                         <Checkbox
                             data={id}
                             label={label}
