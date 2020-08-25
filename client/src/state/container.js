@@ -2,6 +2,7 @@ import Store from './Store.js';
 import Actions from './Actions.js';
 
 const initialState = {
+    loading: false,
     steamid: null,
     user: null,
     profiles: null,
@@ -11,6 +12,6 @@ const initialState = {
 };
 
 const state = Store(initialState);
-const actions = Actions(state);
+const actions = Actions(state, initialState);
 
 export { initialState, state, actions };

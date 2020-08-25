@@ -11,9 +11,6 @@
     export let actions;
 
     let id = params.id || undefined;
-    let promise;
-    let hasFetched = false;
-
     let games = [];
     let players;
     let categories;
@@ -33,10 +30,7 @@
     });
 
     onMount(async () => {
-        // check if already exists in state, otherwise...
-        // could use a Promise.resolve to get from existing state
-        hasFetched = true;
-        promise = getLibraryResult();
+        getLibraryResult();
     });
 
     function onCategoryCheck({ target }, id) {
@@ -52,6 +46,7 @@
         try {
             let result;
 
+            actions.set('loading', true);
             if ($state.libraryResult && $state.categories) {
                 result = await Promise.resolve({
                     libraryResult: $state.libraryResult,
@@ -60,20 +55,20 @@
             } else {
                 result = await sfn.getLibraryResult(id);
             }
+            actions.set('loading', false);
 
             games = result.libraryResult.steamapps;
             players = result.libraryResult.profiles.players;
             categories = result.categories;
         } catch(e) {
+            actions.set('loading', false);
             throw e;
         }
     }
 </script>
 
-{#if hasFetched}
-    {#await promise}
-        <p>loading...</p>
-    {:then}
+{#if players && categories}
+    <div>
         <div class="my-6">
             <h2 class="text-2xl">showing library intersection of:</h2>
             <div class="flex flex-wrap">
@@ -118,7 +113,5 @@
                 {/each}
             </div>
         </div>
-    {:catch error}
-        <p>{error.message}</p>
-    {/await}
+    </div>
 {/if}

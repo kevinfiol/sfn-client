@@ -1,4 +1,6 @@
-const Actions = ({ _, update }) => ({
+const Actions = ({ set, update }, initialState) => ({
+    clear: () => set(initialState),
+
     set: (key, val) => update({
         [key]: val
     }),

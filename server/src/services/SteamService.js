@@ -21,7 +21,6 @@ const SteamService = {
             const response = await Request.get(endpoint);
             const json = await response.json();
             const categories = Object.entries(json);
-            // const categories = Object.entries(json).sort((a, b) => a[1].toUpperCase() > b[1].toUpperCase() ? 1 : -1);
             return categories;
         } catch(e) {
             throw e;
