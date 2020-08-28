@@ -20,7 +20,15 @@ const SteamService = {
         try {
             const response = await Request.get(endpoint);
             const json = await response.json();
-            const categories = Object.entries(json);
+
+            // Use Int Keys, e.g. [1, 'Co-Op']
+            const entries = Object.entries(json).map(c => [parseInt(c[0]), c[1]])
+            
+            // Create boolean map for client-use
+            const boolMap = {};
+            entries.map(c => boolMap[c[0]] = false);
+
+            const categories = { entries, boolMap };
             return categories;
         } catch(e) {
             throw e;

@@ -1,7 +1,9 @@
 <script>
     // deps
-    import Tailwind from './Tailwind.svelte';
+    import sfn from './services/sfn.js';
     import router from 'page';
+    import Tailwind from './Tailwind.svelte';
+    import GlobalStyles from './GlobalStyles.svelte';
 
     // components
     import Spinner from './components/Spinner.svelte';
@@ -20,9 +22,12 @@
     let page;
     let params;
 
+    // wakeup steam service
+    sfn.serverWakeup();
+
     router('/', () => page = Index);
     router('/friends', () => page = Friends);
-    router('/lib/:id',
+    router('/lib/:nanoid',
         (ctx, next) => {
             params = ctx.params;
             next();

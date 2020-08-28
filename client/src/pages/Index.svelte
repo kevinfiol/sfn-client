@@ -23,10 +23,7 @@
         actions.set('loading', true);
         try {
             const profiles = await Promise.resolve(data);
-            // const profiles = await sfn.getAllProfiles(identifier);
             actions.set('profiles', profiles);
-            actions.set('user', profiles.user);
-            actions.set('steamid', profiles.user.steamid);
             actions.set('loading', false);
             page('/friends');
         } catch(e) {

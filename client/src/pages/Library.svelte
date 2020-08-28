@@ -1,6 +1,10 @@
 <script>
+    import { scale } from 'svelte/transition';
+    import { flip } from 'svelte/animate';
     import { onMount }  from 'svelte';
+
     import sfn from '../services/sfn.js';
+    import Button from '../components/Button.svelte';
     import UserCard from '../components/UserCard.svelte';
     import Game from '../components/Game.svelte';
     import Checkbox from '../components/Checkbox.svelte';
@@ -10,22 +14,24 @@
     export let state;
     export let actions;
 
-    let id = params.id || undefined;
-    let games = [];
-    let players;
-    let categories;
+    let nanoid = params.nanoid || undefined;
     let enablePlatformFilter = false;
-    let platform = '';
-    let selectedCategories = [];
+    let platform = 'linux';
+    let multiplayerCategories = [1, 9, 20, 27, 36, 38];
+    let checkedCategories = {};
 
-    $: filteredGames = games.filter(game => {
-        if (enablePlatformFilter && platform !== '' && platform !== undefined)
-            return game.platforms[platform];
+    $: showLibraryResult = $state.libraryResult && $state.categories;
+    $: checkedCatIds = Object.entries(checkedCategories)
+        .reduce((a, c) => c[1] !== false ? [...a, parseInt(c[0])] : a, []);
 
-        if (selectedCategories.length < 1 || selectedCategories.length === categories.length)
+    $: filteredGames = !$state.libraryResult ? [] : $state.libraryResult.steamapps.filter(app => {
+        if (enablePlatformFilter)
+            return app.platforms[platform];
+
+        if (checkedCatIds.length < 1 || checkedCatIds.length === $state.categories.entries.length);
             return true;
 
-        const categoryChecked = game.categories.find(c => selectedCategories.includes(c));
+        const categoryChecked = app.categories.find(c => checkedCatIds.includes(c));
         return categoryChecked !== undefined;
     });
 
@@ -33,33 +39,30 @@
         getLibraryResult();
     });
 
-    function onCategoryCheck({ target }, id) {
-        id = parseInt(id);
+    function checkMultiplayerCategories() {
+        for (let i = 0; i < multiplayerCategories.length; i++) {
+            checkedCategories[multiplayerCategories[i]] = true;
+        }
+    }
 
-        if (target.checked)
-            selectedCategories = [...selectedCategories, parseInt(id)];
-        else
-            selectedCategories = selectedCategories.filter(c => c !== id);
+    function uncheckAllCategories() {
+        for (const key in checkedCategories) {
+            checkedCategories[key] = false;
+        }
     }
 
     async function getLibraryResult() {
         try {
-            let result;
-
             actions.set('loading', true);
-            if ($state.libraryResult && $state.categories) {
-                result = await Promise.resolve({
-                    libraryResult: $state.libraryResult,
-                    categories: $state.categories
-                });
-            } else {
-                result = await sfn.getLibraryResult(id);
-            }
-            actions.set('loading', false);
 
-            games = result.libraryResult.steamapps;
-            players = result.libraryResult.profiles.players;
-            categories = result.categories;
+            if (!$state.libraryResult && !$state.categories) {
+                const result = await sfn.getLibraryResult(nanoid);
+                actions.set('libraryResult', result.libraryResult);
+                actions.set('categories', result.categories);
+            }
+
+            checkedCategories = $state.categories.boolMap;
+            actions.set('loading', false);
         } catch(e) {
             actions.set('loading', false);
             throw e;
@@ -67,12 +70,12 @@
     }
 </script>
 
-{#if players && categories}
+{#if showLibraryResult}
     <div>
         <div class="my-6">
             <h2 class="text-2xl">showing library intersection of:</h2>
             <div class="flex flex-wrap">
-                {#each players as player}
+                {#each $state.libraryResult.profiles.players as player}
                     <div class="w-full sm:w-1/2 md:w-1/4 p-2">
                         <UserCard user={player} />
                     </div>
@@ -89,14 +92,18 @@
         </div>
 
         <div class="my-6">
-            <h3 class="text-xl">categories:</h3>
+            <h2 class="text-2xl">categories (inclusive):</h2>
+
+            <Button on:click={ uncheckAllCategories }>uncheck all</Button>
+            <Button on:click={ checkMultiplayerCategories }>check online multiplayer games</Button>
+
             <div class="flex flex-wrap">
-                {#each categories as [id, label]}
+                {#each $state.categories.entries as [id, label] (id)}
                     <div class="w-full sm:w-1/2 md:w-1/3 lg:w-1/4 p-1">
                         <Checkbox
                             data={id}
                             label={label}
-                            on:change={e => onCategoryCheck(e, id)}
+                            bind:checked={checkedCategories[id]}
                         />
                     </div>
                 {/each}
@@ -107,10 +114,23 @@
             <h2 class="text-2xl">{filteredGames.length} games:</h2>
             <div class="flex flex-wrap">
                 {#each filteredGames as game (game.steam_appid)}
-                    <div class="w-full sm:w-1/2 md:w-1/3 lg:w-1/4 p-2">
+                    <div
+                        class="w-full sm:w-1/2 md:w-1/3 lg:w-1/4 p-2"
+                        animate:flip={{duration: 200}}
+                        out:scale
+                    >
                         <Game {game} />
                     </div>
                 {/each}
+                {#if filteredGames.length < 1}
+                    <div
+                        class="bg-darken p-5 w-full rounded"
+                        in:scale
+                        out:scale
+                    >
+                        <h1 class="text-3xl">no games found</h1>
+                    </div>
+                {/if}
             </div>
         </div>
     </div>

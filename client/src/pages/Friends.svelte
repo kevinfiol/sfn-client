@@ -10,12 +10,11 @@
     export let actions;
 
     let selectedCount = 0;
+    $: showFriends = $state.profiles !== null;
 
     onMount(async () => {
-        if (!$state.profiles || !$state.user || !$state.steamid) {
-            console.log('route back', $state);
+        if (!$state.profiles)
             page('/');
-        }
     });
 
     function stageFriend(friend) {
@@ -28,14 +27,14 @@
 
     async function getCommonApps() {
         const steamids = [
-            $state.steamid,
+            $state.profiles.user.steamid,
             ...Object.values($state.stagedFriends).map(f => f.steamid)
         ];
 
         const profiles = {
             steamids: steamids,
             players: [
-                $state.user,
+                $state.profiles.user,
                 ...$state.profiles.friends.filter(f => steamids.includes(f.steamid))
             ]
         };
@@ -43,9 +42,10 @@
         try {
             actions.set('loading', true);
             const data = await sfn.getCommonApps(profiles);
+            actions.set('loading', false);
+
             actions.set('libraryResult', data.libraryResult);
             actions.set('categories', data.categories);
-            actions.set('loading', false);
             page(`/lib/${data.libraryResult.nanoid}`);
         } catch(e) {
             throw e;
@@ -54,20 +54,24 @@
     }
 </script>
 
-<Button on:click={ getCommonApps }>
-    get apps
-</Button>
-
-{#if $state.profiles}
+{#if showFriends}
     <div class="my-6">
         <h2 class="text-2xl">you:</h2>
-        <UserCard user={$state.user} />
+        <UserCard user={$state.profiles.user} />
     </div>
 
     <div class="my-8">
-        <h2 class="text-2xl">select your friends:</h2>
+        <h2 class="text-2xl">select your friends and 
+            <span class="text-base">
+                <Button on:click={ getCommonApps }>
+                    click here
+                </Button>
+            </span>
+            to find games.
+        </h2>
+
         <div class="flex flex-wrap">
-            {#each $state.profiles.friends as friend}
+            {#each $state.profiles.friends as friend (friend.steamid)}
                 <div class="w-full sm:w-1/2 md:w-1/3 p-2">
                     <UserCard
                         user={friend}

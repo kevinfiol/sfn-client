@@ -3,12 +3,10 @@ import Actions from './Actions.js';
 
 const initialState = {
     loading: false,
-    steamid: null,
-    user: null,
-    profiles: null,
     stagedFriends: {},
-    libraryResult: null,
-    categories: null
+    profiles: null, // Object
+    libraryResult: null, // Object
+    categories: null // Object
 };
 
 const state = Store(initialState);
