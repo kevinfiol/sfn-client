@@ -41,6 +41,8 @@
 
         try {
             actions.set('loading', true);
+            actions.set('loadingMsg', 'getting libraries');
+
             const data = await sfn.getCommonApps(profiles);
             actions.set('loading', false);
 
@@ -61,7 +63,7 @@
     </div>
 
     <div class="my-8">
-        <h2 class="text-2xl">select your friends and 
+        <h2>select your friends and 
             <span class="text-base">
                 <Button on:click={ getCommonApps }>
                     click here

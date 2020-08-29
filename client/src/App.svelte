@@ -3,7 +3,6 @@
     import sfn from './services/sfn.js';
     import router from 'page';
     import Tailwind from './Tailwind.svelte';
-    import GlobalStyles from './GlobalStyles.svelte';
 
     // components
     import Spinner from './components/Spinner.svelte';
@@ -39,7 +38,7 @@
 </script>
 
 {#if $state.loading}
-    <Spinner />
+    <Spinner msg={$state.loadingMsg} />
 {/if}
 
 <Layout>

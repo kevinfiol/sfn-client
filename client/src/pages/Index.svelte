@@ -21,6 +21,8 @@
         if (!formReady) return;
 
         actions.set('loading', true);
+        actions.set('loadingMsg', 'getting profiles');
+
         try {
             const profiles = await Promise.resolve(data);
             actions.set('profiles', profiles);

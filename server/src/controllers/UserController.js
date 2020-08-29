@@ -58,7 +58,6 @@ exports.getCommonApps = async function(req, res) {
 };
 
 exports.getLibraryResult = async function(req, res) {
-    debugger;
     const nanoid = req.body.nanoid;
 
     try {
@@ -72,5 +71,24 @@ exports.getLibraryResult = async function(req, res) {
         }
     } catch(e) {
         res.send(200, { error: e.message });
+    }
+};
+
+exports.updateLibraryResult = async function(req, res) {
+    const nanoid = req.body.nanoid;
+    if (!nanoid) throw new Error('Invalid nanoid received in POST body');
+
+    // check if exists
+    let libraryResult;
+    libraryResult = await LibraryResult.query().findOne({ nanoid });
+    if (libraryResult === undefined) throw new Error('Library Result for given nanoid does not exist');
+
+    try {
+        const steamapps = await SteamService.getCommonApps(libraryResult.idString);
+        const updatedLibraryResult = await libraryResult.$query().patchAndFetch({ steamapps: JSON.stringify(steamapps) });
+        const categories = await SteamService.getAllSteamCategories()
+        res.send(200, { libraryResult: updatedLibraryResult, categories });
+    } catch(e) {
+        throw e;
     }
 };

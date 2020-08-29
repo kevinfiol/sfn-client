@@ -1,30 +1,33 @@
 <script>
     import { onDestroy } from 'svelte';
+
+    export let msg = '';
+
     let step = 0;
-    let text = '/';
+    let spinner = '/';
 
     let timer = setInterval(() => {
         console.log('interval');
         if (step === 7) {
-            text = '|';
+            spinner = '|';
             step = 0;
             return;
         }
 
         if (step === 0 || step === 4)
-            text = '/';
+            spinner = '/';
         if (step === 1 || step === 5)
-            text = '-';
+            spinner = '-';
         if (step === 2 || step === 6)
-            text = '\\';
+            spinner = '\\';
         if (step === 3)
-            text = '|';
+            spinner = '|';
         step += 1;
     }, 100);
 
     onDestroy(() => clearInterval(timer));
 </script>
 
-<div class="text-3xl font-extrabold fixed top-0 right-0 p-2">
-    {text}
+<div class="font-extrabold fixed top-0 right-0 p-2 fade-in">
+    <span class="text-3xl">{spinner} </span><span class="text-lg">{msg}</span>
 </div>

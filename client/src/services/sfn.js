@@ -37,11 +37,23 @@ const sfn = {
         }
     },
 
-    async getLibraryResult(id) {
+    async getLibraryResult(nanoid) {
         const endpoint = `${url}/user/getLibraryResult`;
 
         try {
-            const response = await Request.post(endpoint, { nanoid: id });
+            const response = await Request.post(endpoint, { nanoid });
+            const library = await response.json();
+            return library;
+        } catch(e) {
+            throw e;
+        }
+    },
+
+    async refreshLibraryResult(nanoid) {
+        const endpoint = `${url}/user/updateLibraryResult`;
+
+        try {
+            const response = await Request.post(endpoint, { nanoid });
             const library = await response.json();
             return library;
         } catch(e) {

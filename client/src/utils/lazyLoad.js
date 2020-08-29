@@ -8,7 +8,6 @@ function lazyLoad(node) {
         if(entries[0].intersectionRatio > 0) {
             node.src = src;
             node.className = node.className + ' loaded';
-            console.log(node.className);
         }
 
         if (intersecting) {

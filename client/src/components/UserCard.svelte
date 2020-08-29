@@ -1,4 +1,6 @@
 <script>
+    import lazyLoad from '../utils/lazyLoad.js';
+
     export let user = {
         avatar: '/assets/profile.png',
         personaname: 'User',
@@ -47,7 +49,7 @@
 >
     <div class="flex flex-wrap px-6 py-4">
         <div class="w-1/3">
-            <img class="rounded" src="{user.avatar}" alt="{user.personaname}">
+            <img use:lazyLoad class="lazy rounded" data-src="{user.avatar}" alt="{user.personaname}">
         </div>
         <div class="w-2/3">
             <div class="font-bold text-xl px-2 my-2">{user.personaname}</div>

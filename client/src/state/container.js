@@ -3,6 +3,8 @@ import Actions from './Actions.js';
 
 const initialState = {
     loading: false,
+    loadingMsg: '',
+    errorMsg: '',
     stagedFriends: {},
     profiles: null, // Object
     libraryResult: null, // Object

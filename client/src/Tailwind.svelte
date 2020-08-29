@@ -2,4 +2,8 @@
     @tailwind base;
     @tailwind components;
     @tailwind utilities;
+
+    h1 { @apply text-3xl; }
+    h2 { @apply text-xl; }
+    h3 { @apply text-lg; }
 </style>

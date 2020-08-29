@@ -54,6 +54,7 @@
     async function getLibraryResult() {
         try {
             actions.set('loading', true);
+            actions.set('loadingMsg', 'getting libraries');
 
             if (!$state.libraryResult && !$state.categories) {
                 const result = await sfn.getLibraryResult(nanoid);
@@ -68,12 +69,28 @@
             throw e;
         }
     }
+
+    async function refreshLibraryResult() {
+        try {
+            actions.set('loading', true);
+            actions.set('loadingMsg', 'refreshing libraries');
+
+            const result = await sfn.refreshLibraryResult(nanoid);
+            actions.set('libraryResult', result.libraryResult);
+            actions.set('categories', result.categories);
+
+            actions.set('loading', false);
+        } catch(e) {
+            actions.set('loading', false);
+            throw e;
+        }
+    }
 </script>
 
 {#if showLibraryResult}
     <div>
         <div class="my-6">
-            <h2 class="text-2xl">showing library intersection of:</h2>
+            <h2>showing library intersection of:</h2>
             <div class="flex flex-wrap">
                 {#each $state.libraryResult.profiles.players as player}
                     <div class="w-full sm:w-1/2 md:w-1/4 p-2">
@@ -84,18 +101,26 @@
         </div>
 
         <div class="my-6">
-            <Checkbox label={'enable platform filter?'} bind:checked={enablePlatformFilter} />
-            <br />
-            <Radio bind:group={platform} name={'platform'} label={'windows'} disabled={!enablePlatformFilter} />
-            <Radio bind:group={platform} name={'platform'} label={'linux'} disabled={!enablePlatformFilter} />
-            <Radio bind:group={platform} name={'platform'} label={'mac'} disabled={!enablePlatformFilter} />
+            <div class="flex flex-wrap">
+                <div class="w-full sm:w-1/2">
+                    <Checkbox label={'enable platform filter?'} bind:checked={enablePlatformFilter} />
+                    <br />
+                    <Radio bind:group={platform} name={'platform'} label={'windows'} disabled={!enablePlatformFilter} />
+                    <Radio bind:group={platform} name={'platform'} label={'linux'} disabled={!enablePlatformFilter} />
+                    <Radio bind:group={platform} name={'platform'} label={'mac'} disabled={!enablePlatformFilter} />
+                </div>
+                <div class="w-full sm:w-1/2 text-right">
+                    <span>last updated {$state.libraryResult.updated_at} </span>
+                    <Button on:click={ refreshLibraryResult }>refresh library?</Button>
+                </div>
+            </div>
+
         </div>
 
         <div class="my-6">
-            <h2 class="text-2xl">categories (inclusive):</h2>
-
-            <Button on:click={ uncheckAllCategories }>uncheck all</Button>
+            <h2>categories (inclusive):</h2>
             <Button on:click={ checkMultiplayerCategories }>check online multiplayer games</Button>
+            <Button on:click={ uncheckAllCategories }>uncheck all</Button>
 
             <div class="flex flex-wrap">
                 {#each $state.categories.entries as [id, label] (id)}
@@ -111,7 +136,7 @@
         </div>
 
         <div class="my-6">
-            <h2 class="text-2xl">{filteredGames.length} games:</h2>
+            <h2>{filteredGames.length} games:</h2>
             <div class="flex flex-wrap">
                 {#each filteredGames as game (game.steam_appid)}
                     <div
@@ -128,7 +153,7 @@
                         in:scale
                         out:scale
                     >
-                        <h1 class="text-3xl">no games found</h1>
+                        <h1>no games found</h1>
                     </div>
                 {/if}
             </div>

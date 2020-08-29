@@ -5,4 +5,4 @@ const config = require('./config.js');
 const knex = Knex(config.database);
 Model.knex(knex);
 
-module.exports = { Model };
+module.exports = { Model, knex };
