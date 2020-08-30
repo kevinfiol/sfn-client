@@ -45,7 +45,7 @@
 </form>
 
 <div class="text-center my-6">
-    <p>compare game libraries with friends</p>
-    <p>filter by platform or category</p>
-    <p>figure out what game to play tonight</p>
+    <h3>compare game libraries with friends ✓</h3>
+    <h3>filter by platform or category ✓</h3>
+    <h3>figure out what game to play tonight ✓</h3>
 </div>
