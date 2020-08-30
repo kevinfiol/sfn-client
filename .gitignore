@@ -1,4 +1,4 @@
 /node_modules/
 /public/app/
-
+.vercel
 .DS_Store
