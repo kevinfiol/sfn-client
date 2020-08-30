@@ -43,6 +43,7 @@
 
 <div
     class="card"
+    title={user.personaname}
     class:disabled={disabled}
     class:selectable={selectable}
     class:selected={selected}

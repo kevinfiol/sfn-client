@@ -1,5 +1,6 @@
 <script>
     import { onMount }  from 'svelte';
+    import { scale } from 'svelte/transition';
     import page from 'page';
     import sfn from '../services/sfn.js';
 
@@ -64,13 +65,12 @@
     </div>
 
     <div class="my-8">
-        <h2>select your friends and 
-            <span class="text-base">
+        <h2>select your friends and
+            <span class="text-base mx-1">
                 <Button on:click={ getCommonApps }>
-                    click here
+                    click here to find games
                 </Button>
             </span>
-            to find games.
         </h2>
 
         <div class="flex flex-wrap">

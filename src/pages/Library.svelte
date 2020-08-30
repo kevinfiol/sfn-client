@@ -148,9 +148,9 @@
             <h2>showing library intersection of:</h2>
             <div class="flex flex-wrap">
                 {#each $state.libraryResult.profiles.players as player}
-                    <div class="w-full sm:w-1/2 md:w-1/4 p-2">
-                        <UserCard user={player} />
-                    </div>
+                    <a href={player.profileurl} class="w-full sm:w-1/2 md:w-1/4 p-2">
+                        <UserCard selectable={true} user={player} />
+                    </a>
                 {/each}
             </div>
         </div>
