@@ -43,3 +43,9 @@
         get friends
     </Button>
 </form>
+
+<div class="text-center my-6">
+    <p>compare game libraries with friends</p>
+    <p>filter by platform or category</p>
+    <p>figure out what game to play tonight</p>
+</div>
