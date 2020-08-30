@@ -11,6 +11,9 @@
     let identifier = '';
     $: formReady = identifier.trim().length > 0;
 
+    // wakeup steam service
+    sfn.serverWakeup();
+
     onMount(async () => {
         actions.clear();
     });
@@ -37,8 +40,7 @@
 </script>
 
 <form on:submit|preventDefault={getAllProfiles}>
-    <label>enter your steamid or alias:</label>
-    <TextInput bind:value={identifier} />
+    <TextInput bind:value={identifier} placeholder={'enter your steamid or alias...'} />
     <Button attrs={{ type: 'submit', disabled: !formReady }}>
         get friends
     </Button>
@@ -48,4 +50,5 @@
     <h3>compare game libraries with friends ✓</h3>
     <h3>filter by platform or category ✓</h3>
     <h3>figure out what game to play tonight ✓</h3>
+    <p>(p.s. make sure your profile is set to <a class="underline" href="https://support.steampowered.com/kb_article.php?ref=4113-YUDH-6401">public</a>)</p>
 </div>

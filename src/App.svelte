@@ -1,6 +1,5 @@
 <script>
     // deps
-    import sfn from './services/sfn.js';
     import router from 'page';
     import Tailwind from './Tailwind.svelte';
 
@@ -20,9 +19,6 @@
     // router
     let page;
     let params;
-
-    // wakeup steam service
-    sfn.serverWakeup();
 
     router('/', () => page = Index);
     router('/friends', () => page = Friends);

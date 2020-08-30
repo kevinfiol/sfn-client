@@ -2,6 +2,7 @@
     import lazyLoad from '../utils/lazyLoad.js';
 
     export let game;
+    export let title = game.name || '';
 
     let platformText = Object.entries(game.platforms)
         .reduce((acc, cur) => {
@@ -30,7 +31,7 @@
 </style>
 
 <a href="{`https://store.steampowered.com/app/${game.steam_appid}`}">
-    <div class="card" title={game.name}>
+    <div class="card" {title}>
         <img use:lazyLoad class="lazy w-full" data-src="{game.header_image}" alt="{game.name}">
         <div class="px-6 py-4">
             <h3 class="font-bold mb-2">

@@ -3,6 +3,7 @@
     import { onMount }  from 'svelte';
 
     import sfn from '../services/sfn.js';
+    import TextInput from '../components/TextInput.svelte';
     import Alert from '../components/Alert.svelte';
     import Button from '../components/Button.svelte';
     import UserCard from '../components/UserCard.svelte';
@@ -18,6 +19,7 @@
     let nanoid = params.nanoid || undefined;
     let enablePlatformFilter = false;
     let platform = 'linux';
+    let gameTextFilter = '';
 
     let multiplayerCategories = [1, 9, 20, 27, 36, 38];
     let hashedCategories = {};
@@ -56,25 +58,33 @@
     $: checkedCatIds = Object.entries(checkedCategories)
         .reduce((a, c) => c[1] !== false ? [...a, parseInt(c[0])] : a, []);
 
+    $: checkedCatNames = checkedCatIds.length < 1 ? ''
+        : checkedCatIds.map(id => $state.categories.nameMap[id]).join(', ');
+
     $: hash = '#!' + (enablePlatformFilter ? `p=${platform}` : '')
         + (enablePlatformFilter && checkedCatIds.length > 0 ? '&' : '')
         + (checkedCatIds.length > 0 ? 'c=' + checkedCatIds.join(',') : '');
 
-    $: filteredGames = !$state.libraryResult ? [] : $state.libraryResult.steamapps.filter(app => {
+    $: filteredGames = !$state.libraryResult ? [] : $state.libraryResult.steamapps.filter(game => {
         let platformChecked = true;
+        let matchesTextFilter = true;
         let allCategoriesChecked; // all checked OR unchecked
 
         if (checkedCatIds.length < 1 || checkedCatIds.length === $state.categories.entries.length);
             allCategoriesChecked = true;
 
         if (enablePlatformFilter) {
-            platformChecked = app.platforms[platform];
+            platformChecked = game.platforms[platform];
             if (platformChecked && allCategoriesChecked)
                 return true;
         }
 
-        const categoryChecked = app.categories.find(c => checkedCatIds.includes(c));
-        return ((categoryChecked !== undefined) || allCategoriesChecked) && platformChecked;
+        if (gameTextFilter.length > 0) {
+            matchesTextFilter = game.name.toUpperCase().includes(gameTextFilter.toUpperCase().trim());
+        }
+
+        const categoryChecked = game.categories.find(c => checkedCatIds.includes(c));
+        return ((categoryChecked !== undefined) || allCategoriesChecked) && platformChecked && matchesTextFilter;
     });
 
     $: {
@@ -173,7 +183,7 @@
         </div>
 
         <div class="my-6">
-            <h2>categories (inclusive):</h2>
+            <h2>categories:</h2>
             <Button on:click={ checkMultiplayerCategories }>check online multiplayer games</Button>
             <Button on:click={ uncheckAllCategories }>uncheck all</Button>
 
@@ -192,10 +202,19 @@
 
         <div class="my-6">
             <h2>{filteredGames.length} games:</h2>
+            <TextInput bind:value={gameTextFilter} placeholder={'filter by name...'} />
+
+            {#if checkedCatNames.length > 0}
+                <p><em>showing games of categories: {checkedCatNames}</em></p>
+            {/if}
+
             <div class="flex flex-wrap">
                 {#each filteredGames as game (game.steam_appid)}
                     <div class="w-full sm:w-1/2 md:w-1/3 lg:w-1/4 p-2">
-                        <Game {game} />
+                        <Game
+                            {game}
+                            title={`${game.name}\n===\n${game.categories.map(c => $state.categories.nameMap[c]).join('\n')}`}
+                        />
                     </div>
                 {/each}
                 {#if filteredGames.length < 1}
