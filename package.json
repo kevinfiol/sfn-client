@@ -4,7 +4,8 @@
   "scripts": {
     "build": "rollup -c",
     "dev": "rollup -c -w",
-    "serve": "sirv public --port 8090 --single"
+    "serve": "sirv public --port 8090 --single",
+    "deploy": "vercel --prod"
   },
   "devDependencies": {
     "@fullhuman/postcss-purgecss": "^2.2.0",

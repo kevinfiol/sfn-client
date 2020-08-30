@@ -56,8 +56,6 @@
     $: checkedCatIds = Object.entries(checkedCategories)
         .reduce((a, c) => c[1] !== false ? [...a, parseInt(c[0])] : a, []);
 
-    $: console.log(checkedCatIds);
-
     $: hash = '#!' + (enablePlatformFilter ? `p=${platform}` : '')
         + (enablePlatformFilter && checkedCatIds.length > 0 ? '&' : '')
         + (checkedCatIds.length > 0 ? 'c=' + checkedCatIds.join(',') : '');

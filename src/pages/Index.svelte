@@ -1,6 +1,5 @@
 <script>
     import { onMount }  from 'svelte';
-    // import data from '../../tests/data/profiles.json';
     import page from 'page';
     import sfn from '../services/sfn.js';
 
@@ -25,8 +24,6 @@
 
         try {
             const data = await sfn.getAllProfiles(identifier);
-            console.log(data);
-            // const profiles = await Promise.resolve(data);
             if (data.error) throw new Error(data.message);
 
             actions.set('profiles', data);

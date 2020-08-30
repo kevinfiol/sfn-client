@@ -1,10 +1,12 @@
 import Request from '../utils/Request.js';
+import config from '../../config.js';
 
-const url = 'http://localhost:8080';
+const SFN_SERVER_URL = config.services.sfn_server.SFN_SERVER_URL;
+const api = endpoint => `${SFN_SERVER_URL}${endpoint}`;
 
 const sfn = {
     async serverWakeup() {
-        const endpoint = `${url}/`;
+        const endpoint = api('/');
         try {
             await Request.get(endpoint);
         } catch(e) {
@@ -13,12 +15,11 @@ const sfn = {
     },
 
     async getAllProfiles(identifier) {
-        const endpoint = `${url}/user/getAllProfiles/${identifier}`;
+        const endpoint = api(`/user/getAllProfiles/${identifier}`);
 
         try {
             const response = await Request.get(endpoint);
             const allProfiles = await response.json();
-            console.log(allProfiles);
             return allProfiles;
         } catch(e) {
             throw e;
@@ -26,7 +27,7 @@ const sfn = {
     },
 
     async getCommonApps(profiles) {
-        const endpoint = `${url}/user/getCommonApps`;
+        const endpoint = api(`/user/getCommonApps`);
 
         try {
             const response = await Request.post(endpoint, { profiles });
@@ -38,7 +39,7 @@ const sfn = {
     },
 
     async getLibraryResult(nanoid) {
-        const endpoint = `${url}/user/getLibraryResult`;
+        const endpoint = api(`/user/getLibraryResult`);
 
         try {
             const response = await Request.post(endpoint, { nanoid });
@@ -50,7 +51,7 @@ const sfn = {
     },
 
     async refreshLibraryResult(nanoid) {
-        const endpoint = `${url}/user/updateLibraryResult`;
+        const endpoint = api(`/user/updateLibraryResult`);
 
         try {
             const response = await Request.post(endpoint, { nanoid });
