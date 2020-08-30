@@ -40,6 +40,7 @@
         };
 
         try {
+            actions.error();
             actions.set('loading', true);
             actions.set('loadingMsg', 'getting libraries');
 
@@ -50,8 +51,8 @@
             actions.set('categories', data.categories);
             page(`/lib/${data.libraryResult.nanoid}`);
         } catch(e) {
-            throw e;
             actions.set('loading', false);
+            actions.error('could not retrieve libraries.');
         }
     }
 </script>
@@ -77,14 +78,14 @@
                 <div class="w-full sm:w-1/2 md:w-1/3 p-2">
                     <UserCard
                         user={friend}
-                        disabled={selectedCount >= 5 && !(friend.steamid in $state.stagedFriends)}
+                        disabled={!friend.visible || (selectedCount >= 5 && !(friend.steamid in $state.stagedFriends))}
                         selected={friend.steamid in $state.stagedFriends}
-                        selectable={selectedCount < 5 || (friend.steamid in $state.stagedFriends)}
+                        selectable={friend.visible && (selectedCount < 5 || (friend.steamid in $state.stagedFriends))}
                         on:click={() => {
                             if (friend.steamid in $state.stagedFriends) {
                                 unstageFriend(friend.steamid);
                                 selectedCount -= 1;
-                            } else if (selectedCount < 5) {
+                            } else if (selectedCount < 5 && friend.visible) {
                                 stageFriend(friend);
                                 selectedCount += 1;
                             }

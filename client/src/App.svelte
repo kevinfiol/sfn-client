@@ -5,6 +5,7 @@
     import Tailwind from './Tailwind.svelte';
 
     // components
+    import Alert from './components/Alert.svelte';
     import Spinner from './components/Spinner.svelte';
 
     // pages
@@ -15,7 +16,7 @@
 
     // state
     import { state, actions } from './state/container.js';
-    state.subscribe(console.log);
+    // state.subscribe(console.log);
 
     // router
     let page;
@@ -38,7 +39,17 @@
 </script>
 
 {#if $state.loading}
-    <Spinner msg={$state.loadingMsg} />
+    <div class="fixed top-0 right-0 py-2 px-5">
+        <Spinner msg={$state.loadingMsg} />
+    </div>
+{/if}
+
+{#if $state.errorMsg.length > 0}
+    <div class="fixed top-0 right-0">
+        <Alert>
+            <h3>error: {$state.errorMsg}</h3>
+        </Alert>
+    </div>
 {/if}
 
 <Layout>

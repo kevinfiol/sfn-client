@@ -5,6 +5,10 @@ const Actions = ({ set, update }, initialState) => ({
         [key]: val
     }),
 
+    error: (errorMsg = '') => update({
+        errorMsg
+    }),
+
     stageFriend: friend => update({
         stagedFriends: { [friend.steamid]: friend }
     }),

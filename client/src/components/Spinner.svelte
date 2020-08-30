@@ -7,7 +7,6 @@
     let spinner = '/';
 
     let timer = setInterval(() => {
-        console.log('interval');
         if (step === 7) {
             spinner = '|';
             step = 0;
@@ -28,6 +27,6 @@
     onDestroy(() => clearInterval(timer));
 </script>
 
-<div class="font-extrabold fixed top-0 right-0 p-2 fade-in">
+<div class="font-extrabold">
     <span class="text-3xl">{spinner} </span><span class="text-lg">{msg}</span>
 </div>

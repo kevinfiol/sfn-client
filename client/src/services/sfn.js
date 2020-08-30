@@ -7,7 +7,6 @@ const sfn = {
         const endpoint = `${url}/`;
         try {
             await Request.get(endpoint);
-            console.log('called!');
         } catch(e) {
             throw e;
         }

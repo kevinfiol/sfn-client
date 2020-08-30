@@ -1,6 +1,6 @@
 <script>
     import { onMount }  from 'svelte';
-    import data from '../../tests/data/profiles.json';
+    // import data from '../../tests/data/profiles.json';
     import page from 'page';
     import sfn from '../services/sfn.js';
 
@@ -20,17 +20,21 @@
     async function getAllProfiles() {
         if (!formReady) return;
 
+        actions.error();
         actions.set('loading', true);
         actions.set('loadingMsg', 'getting profiles');
 
         try {
-            const profiles = await Promise.resolve(data);
-            actions.set('profiles', profiles);
+            const data = await sfn.getAllProfiles(identifier);
+            // const profiles = await Promise.resolve(data);
+            if (data.error) throw new Error(data.message);
+
+            actions.set('profiles', data);
             actions.set('loading', false);
             page('/friends');
         } catch(e) {
             actions.set('loading', false);
-            throw e;
+            actions.error('could not retrieve profiles');
         }
     }
 </script>

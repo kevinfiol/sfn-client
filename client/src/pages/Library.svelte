@@ -4,6 +4,7 @@
     import { onMount }  from 'svelte';
 
     import sfn from '../services/sfn.js';
+    import Alert from '../components/Alert.svelte';
     import Button from '../components/Button.svelte';
     import UserCard from '../components/UserCard.svelte';
     import Game from '../components/Game.svelte';
@@ -14,15 +15,49 @@
     export let state;
     export let actions;
 
+    let [baseUrl, hashParams] = window.location.href.split('#!');
     let nanoid = params.nanoid || undefined;
     let enablePlatformFilter = false;
     let platform = 'linux';
     let multiplayerCategories = [1, 9, 20, 27, 36, 38];
     let checkedCategories = {};
 
+    if (hashParams) {
+        const hashStr = hashParams.split('&');
+
+        const setCategories = str => {
+            const categories = str.split(',');
+            for (let i = 0; i < categories.length; i++) {
+                checkedCategories[categories[i]] = true;
+            }
+        }
+
+        if (hashStr.length > 1) {
+            let [platformStr, categoryStr] = hashStr;
+
+            enablePlatformFilter = true;
+            platform = platformStr.split('=')[1];
+            setCategories(categoryStr.split('=')[1]);
+        } else {
+            const [code, value] = hashStr[0].split('=');
+
+            if (code === 'p') {
+                enablePlatformFilter = true;
+                platform = value;
+            } else if (code === 'c') {
+                setCategories(value);
+            }
+        }
+    }
+
     $: showLibraryResult = $state.libraryResult && $state.categories;
+
     $: checkedCatIds = Object.entries(checkedCategories)
         .reduce((a, c) => c[1] !== false ? [...a, parseInt(c[0])] : a, []);
+
+    $: hash = '#!' + (enablePlatformFilter ? `p=${platform}` : '')
+        + (enablePlatformFilter && checkedCatIds.length > 0 ? '&' : '')
+        + (checkedCatIds.length > 0 ? 'c=' + checkedCatIds.join(',') : '');
 
     $: filteredGames = !$state.libraryResult ? [] : $state.libraryResult.steamapps.filter(app => {
         if (enablePlatformFilter)
@@ -35,7 +70,13 @@
         return categoryChecked !== undefined;
     });
 
+    $: {
+        // updates url hash for filters
+        window.location.href = baseUrl + hash;
+    }
+
     onMount(async () => {
+        console.log(window.location.href);
         getLibraryResult();
     });
 
@@ -53,6 +94,7 @@
 
     async function getLibraryResult() {
         try {
+            actions.error();
             actions.set('loading', true);
             actions.set('loadingMsg', 'getting libraries');
 
@@ -62,16 +104,18 @@
                 actions.set('categories', result.categories);
             }
 
-            checkedCategories = $state.categories.boolMap;
+            checkedCategories = { ...$state.categories.boolMap, ...checkedCategories};
+            console.log(checkedCategories);
             actions.set('loading', false);
         } catch(e) {
             actions.set('loading', false);
-            throw e;
+            actions.error('could not retrieve library result. URL may be invalid.')
         }
     }
 
     async function refreshLibraryResult() {
         try {
+            actions.error();
             actions.set('loading', true);
             actions.set('loadingMsg', 'refreshing libraries');
 
@@ -82,7 +126,7 @@
             actions.set('loading', false);
         } catch(e) {
             actions.set('loading', false);
-            throw e;
+            actions.error('could not refresh library. maybe try again in a bit?')
         }
     }
 </script>
@@ -148,13 +192,9 @@
                     </div>
                 {/each}
                 {#if filteredGames.length < 1}
-                    <div
-                        class="bg-darken p-5 w-full rounded"
-                        in:scale
-                        out:scale
-                    >
+                    <Alert>
                         <h1>no games found</h1>
-                    </div>
+                    </Alert>
                 {/if}
             </div>
         </div>

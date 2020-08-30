@@ -5,7 +5,8 @@
         avatar: '/assets/profile.png',
         personaname: 'User',
         profileurl: 'https://steamcommunity.com',
-        steamid: '123'
+        steamid: '123',
+        visible: true
     };
 
     export let selected = false;
@@ -24,7 +25,7 @@
     }
 
     .card.disabled {
-        @apply opacity-25;
+        @apply opacity-25 cursor-not-allowed;
     }
 
     .card.selectable:hover {
@@ -53,6 +54,9 @@
         </div>
         <div class="w-2/3">
             <div class="font-bold text-xl px-2 my-2">{user.personaname}</div>
+            {#if !user.visible}
+                <small class="opacity-50">(profile set to private)</small>
+            {/if}
         </div>
     </div>
 </div>
