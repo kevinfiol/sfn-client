@@ -63,11 +63,20 @@
         + (checkedCatIds.length > 0 ? 'c=' + checkedCatIds.join(',') : '');
 
     $: filteredGames = !$state.libraryResult ? [] : $state.libraryResult.steamapps.filter(app => {
+        let platformChecked = true;
+        let allCategoriesChecked; // all checked OR unchecked
+
         if (checkedCatIds.length < 1 || checkedCatIds.length === $state.categories.entries.length);
-            return true;
+            allCategoriesChecked = true;
+
+        if (enablePlatformFilter) {
+            platformChecked = app.platforms[platform];
+            if (platformChecked && allCategoriesChecked)
+                return true;
+        }
 
         const categoryChecked = app.categories.find(c => checkedCatIds.includes(c));
-        return (categoryChecked !== undefined) && (enablePlatformFilter ? app.platforms[platform] : true);
+        return ((categoryChecked !== undefined) || allCategoriesChecked) && platformChecked;
     });
 
     $: {
