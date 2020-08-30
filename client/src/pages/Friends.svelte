@@ -59,7 +59,7 @@
 
 {#if showFriends}
     <div class="my-6">
-        <h2 class="text-2xl">you:</h2>
+        <h2>you:</h2>
         <UserCard user={$state.profiles.user} />
     </div>
 

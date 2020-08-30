@@ -1,6 +1,5 @@
 <script>
-    import { scale } from 'svelte/transition';
-    import { flip } from 'svelte/animate';
+    import page from 'page';
     import { onMount }  from 'svelte';
 
     import sfn from '../services/sfn.js';
@@ -64,14 +63,11 @@
         + (checkedCatIds.length > 0 ? 'c=' + checkedCatIds.join(',') : '');
 
     $: filteredGames = !$state.libraryResult ? [] : $state.libraryResult.steamapps.filter(app => {
-        if (enablePlatformFilter)
-            return app.platforms[platform];
-
         if (checkedCatIds.length < 1 || checkedCatIds.length === $state.categories.entries.length);
             return true;
 
         const categoryChecked = app.categories.find(c => checkedCatIds.includes(c));
-        return categoryChecked !== undefined;
+        return (categoryChecked !== undefined) && (enablePlatformFilter ? app.platforms[platform] : true);
     });
 
     $: {
@@ -107,9 +103,7 @@
                 actions.set('categories', result.categories);
             }
 
-            console.log(hashedCategories);
             checkedCategories = { ...$state.categories.boolMap, ...hashedCategories };
-            console.log(checkedCategories);
             actions.set('loading', false);
         } catch(e) {
             actions.set('loading', false);
@@ -137,6 +131,12 @@
 
 {#if showLibraryResult}
     <div>
+        {#if $state.profiles}
+            <Button on:click={ () => page('/friends') }>
+                {'<- back to friends'}
+            </Button>
+        {/if}
+
         <div class="my-6">
             <h2>showing library intersection of:</h2>
             <div class="flex flex-wrap">
@@ -187,11 +187,7 @@
             <h2>{filteredGames.length} games:</h2>
             <div class="flex flex-wrap">
                 {#each filteredGames as game (game.steam_appid)}
-                    <div
-                        class="w-full sm:w-1/2 md:w-1/3 lg:w-1/4 p-2"
-                        animate:flip={{duration: 200}}
-                        out:scale
-                    >
+                    <div class="w-full sm:w-1/2 md:w-1/3 lg:w-1/4 p-2">
                         <Game {game} />
                     </div>
                 {/each}

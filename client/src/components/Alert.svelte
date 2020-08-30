@@ -1,7 +1,5 @@
 <script>
     import { scale } from 'svelte/transition';
-
-    export let message;
 </script>
 
 <div

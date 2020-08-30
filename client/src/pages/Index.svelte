@@ -7,7 +7,6 @@
     import TextInput from '../components/TextInput.svelte';
     import Button from '../components/Button.svelte';
 
-    export let state;
     export let actions;
 
     let identifier = '';
