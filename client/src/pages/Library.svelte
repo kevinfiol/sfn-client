@@ -19,7 +19,9 @@
     let nanoid = params.nanoid || undefined;
     let enablePlatformFilter = false;
     let platform = 'linux';
+
     let multiplayerCategories = [1, 9, 20, 27, 36, 38];
+    let hashedCategories = {};
     let checkedCategories = {};
 
     if (hashParams) {
@@ -28,9 +30,9 @@
         const setCategories = str => {
             const categories = str.split(',');
             for (let i = 0; i < categories.length; i++) {
-                checkedCategories[categories[i]] = true;
+                hashedCategories[categories[i]] = true;
             }
-        }
+        };
 
         if (hashStr.length > 1) {
             let [platformStr, categoryStr] = hashStr;
@@ -55,6 +57,8 @@
     $: checkedCatIds = Object.entries(checkedCategories)
         .reduce((a, c) => c[1] !== false ? [...a, parseInt(c[0])] : a, []);
 
+    $: console.log(checkedCatIds);
+
     $: hash = '#!' + (enablePlatformFilter ? `p=${platform}` : '')
         + (enablePlatformFilter && checkedCatIds.length > 0 ? '&' : '')
         + (checkedCatIds.length > 0 ? 'c=' + checkedCatIds.join(',') : '');
@@ -76,7 +80,6 @@
     }
 
     onMount(async () => {
-        console.log(window.location.href);
         getLibraryResult();
     });
 
@@ -104,7 +107,8 @@
                 actions.set('categories', result.categories);
             }
 
-            checkedCategories = { ...$state.categories.boolMap, ...checkedCategories};
+            console.log(hashedCategories);
+            checkedCategories = { ...$state.categories.boolMap, ...hashedCategories };
             console.log(checkedCategories);
             actions.set('loading', false);
         } catch(e) {

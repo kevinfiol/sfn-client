@@ -26,6 +26,7 @@
 
         try {
             const data = await sfn.getAllProfiles(identifier);
+            console.log(data);
             // const profiles = await Promise.resolve(data);
             if (data.error) throw new Error(data.message);
 

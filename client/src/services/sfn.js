@@ -18,6 +18,7 @@ const sfn = {
         try {
             const response = await Request.get(endpoint);
             const allProfiles = await response.json();
+            console.log(allProfiles);
             return allProfiles;
         } catch(e) {
             throw e;
