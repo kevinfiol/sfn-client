@@ -12,7 +12,7 @@
         @apply bg-gray-800;
     }
 
-    button:focus, button:active {
+    button:focus, button:active:not(:disabled) {
         @apply bg-teal-700 outline-none shadow-outline;
     }
 
