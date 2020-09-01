@@ -8,7 +8,7 @@
         transition: all 0.1s ease;
     }
 
-    button:hover {
+    button:hover:not(:disabled) {
         @apply bg-gray-800;
     }
 
@@ -17,7 +17,7 @@
     }
 
     button:disabled {
-        @apply text-gray-700 border-gray-700;
+        @apply text-gray-700 border-gray-700 cursor-not-allowed;
     }
 </style>
 
