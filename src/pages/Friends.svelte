@@ -67,7 +67,7 @@
     <div class="my-8">
         <h2>select your friends and
             <span class="text-base mx-1">
-                <Button on:click={ getCommonApps }>
+                <Button on:click={ getCommonApps } attrs={{ disabled: Object.keys($state.stageFriends).length < 1 }}>
                     click here to find games
                 </Button>
             </span>
