@@ -218,7 +218,7 @@
                     </div>
                 {/each}
                 {#if filteredGames.length < 1}
-                    <div class="my-4">
+                    <div class="my-4 w-full">
                         <Alert>
                             <h1>no games found</h1>
                         </Alert>

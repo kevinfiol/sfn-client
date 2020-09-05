@@ -103,7 +103,7 @@
                 </div>
             {/each}
             {#if filteredFriends.length < 1}
-                <div class="my-4">
+                <div class="my-4 w-full">
                     <Alert>
                         <h1>no friends found</h1>
                     </Alert>
