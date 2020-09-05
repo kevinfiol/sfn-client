@@ -218,9 +218,11 @@
                     </div>
                 {/each}
                 {#if filteredGames.length < 1}
-                    <Alert>
-                        <h1>no games found</h1>
-                    </Alert>
+                    <div class="my-4">
+                        <Alert>
+                            <h1>no games found</h1>
+                        </Alert>
+                    </div>
                 {/if}
             </div>
         </div>

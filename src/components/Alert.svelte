@@ -3,7 +3,7 @@
 </script>
 
 <div
-    class="bg-darken p-5 w-full rounded my-4"
+    class="bg-darken p-5 w-full rounded"
     in:scale
     out:scale
 >
