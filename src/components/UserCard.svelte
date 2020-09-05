@@ -51,10 +51,12 @@
 >
     <div class="flex flex-wrap px-6 py-4">
         <div class="w-1/3">
-            <img use:lazyLoad class="lazy rounded" data-src="{user.avatar}" alt="{user.personaname}">
+            <div class="rounded" style="height: 64px; width: 64px;">
+                <img use:lazyLoad class="lazy rounded" data-src="{user.avatar}" alt="{user.personaname}">
+            </div>
         </div>
         <div class="w-2/3">
-            <div class="font-bold text-xl px-2 my-2">{user.personaname}</div>
+            <div class="font-bold text-md px-2 my-2">{user.personaname}</div>
             {#if !user.visible}
                 <small class="opacity-50">(profile set to private)</small>
             {/if}

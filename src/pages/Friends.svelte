@@ -4,6 +4,8 @@
     import page from 'page';
     import sfn from '../services/sfn.js';
 
+    import Alert from '../components/Alert.svelte';
+    import TextInput from '../components/TextInput.svelte';
     import Button from '../components/Button.svelte';
     import UserCard from '../components/UserCard.svelte';
 
@@ -11,7 +13,12 @@
     export let actions;
 
     let selectedCount = 0;
+    let friendNameFilter = '';
     $: showFriends = $state.profiles !== null;
+    $: filteredFriends = !($state.profiles && $state.profiles.friends)
+        ? []
+        : $state.profiles.friends.filter(f => f.personaname.toUpperCase().includes(friendNameFilter.toUpperCase().trim()))
+    ;
 
     onMount(async () => {
         if (!$state.profiles)
@@ -73,8 +80,10 @@
             </span>
         </h2>
 
+        <TextInput bind:value={friendNameFilter} placeholder={'filter by name...'} />
+
         <div class="flex flex-wrap">
-            {#each $state.profiles.friends as friend (friend.steamid)}
+            {#each filteredFriends as friend (friend.steamid)}
                 <div class="w-full sm:w-1/2 md:w-1/3 p-2">
                     <UserCard
                         user={friend}
@@ -93,6 +102,11 @@
                     />
                 </div>
             {/each}
+            {#if filteredFriends.length < 1}
+                <Alert>
+                    <h1>no friends found</h1>
+                </Alert>
+            {/if}
         </div>
     </div>
 {/if}

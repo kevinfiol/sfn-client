@@ -205,7 +205,7 @@
             <TextInput bind:value={gameTextFilter} placeholder={'filter by name...'} />
 
             {#if checkedCatNames.length > 0}
-                <p><em>showing games of categories: {checkedCatNames}</em></p>
+                <div><em>showing games of categories: {checkedCatNames}</em></div>
             {/if}
 
             <div class="flex flex-wrap">
