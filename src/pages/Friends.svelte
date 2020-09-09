@@ -14,8 +14,8 @@
 
     let selectedCount = 0;
     let friendNameFilter = '';
-    $: showFriends = $state.profiles !== null;
-    $: filteredFriends = !($state.profiles && $state.profiles.friends)
+    $: showFriends = $state.profiles && $state.profiles.friends;
+    $: filteredFriends = !showFriends
         ? []
         : $state.profiles.friends.filter(f => f.personaname.toUpperCase().includes(friendNameFilter.toUpperCase().trim()))
     ;
@@ -68,7 +68,9 @@
 {#if showFriends}
     <div class="my-6">
         <h2>you:</h2>
-        <UserCard user={$state.profiles.user} />
+        <a href={$state.profiles.user.profileurl} target="_blank">
+            <UserCard selectable={true} user={$state.profiles.user} />
+        </a>
     </div>
 
     <div class="my-8">

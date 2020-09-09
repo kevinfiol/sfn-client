@@ -53,7 +53,11 @@
         }
     }
 
-    $: showLibraryResult = $state.libraryResult && $state.categories;
+    $: showLibraryResult =
+        $state.libraryResult
+        && $state.libraryResult.steamapps
+        && $state.categories;
+    ;
 
     $: checkedCatIds = Object.entries(checkedCategories)
         .reduce((a, c) => c[1] !== false ? [...a, parseInt(c[0])] : a, []);
@@ -65,27 +69,30 @@
         + (enablePlatformFilter && checkedCatIds.length > 0 ? '&' : '')
         + (checkedCatIds.length > 0 ? 'c=' + checkedCatIds.join(',') : '');
 
-    $: filteredGames = !$state.libraryResult ? [] : $state.libraryResult.steamapps.filter(game => {
-        let platformChecked = true;
-        let matchesTextFilter = true;
-        let allCategoriesChecked; // all checked OR unchecked
+    $: filteredGames = !showLibraryResult
+        ? []
+        : $state.libraryResult.steamapps.filter(game => {
+            let platformChecked = true;
+            let matchesTextFilter = true;
+            let allCategoriesChecked; // all checked OR unchecked
 
-        if (checkedCatIds.length < 1 || checkedCatIds.length === $state.categories.entries.length);
-            allCategoriesChecked = true;
+            if (checkedCatIds.length < 1 || checkedCatIds.length === $state.categories.entries.length);
+                allCategoriesChecked = true;
 
-        if (enablePlatformFilter) {
-            platformChecked = game.platforms[platform];
-            if (platformChecked && allCategoriesChecked)
-                return true;
-        }
+            if (enablePlatformFilter) {
+                platformChecked = game.platforms[platform];
+                if (platformChecked && allCategoriesChecked)
+                    return true;
+            }
 
-        if (gameTextFilter.length > 0) {
-            matchesTextFilter = game.name.toUpperCase().includes(gameTextFilter.toUpperCase().trim());
-        }
+            if (gameTextFilter.length > 0) {
+                matchesTextFilter = game.name.toUpperCase().includes(gameTextFilter.toUpperCase().trim());
+            }
 
-        const categoryChecked = game.categories.find(c => checkedCatIds.includes(c));
-        return ((categoryChecked !== undefined) || allCategoriesChecked) && platformChecked && matchesTextFilter;
-    });
+            const categoryChecked = game.categories.find(c => checkedCatIds.includes(c));
+            return ((categoryChecked !== undefined) || allCategoriesChecked) && platformChecked && matchesTextFilter;
+        })
+    ;
 
     $: {
         // updates url hash for filters
