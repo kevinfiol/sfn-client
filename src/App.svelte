@@ -34,8 +34,10 @@
 </script>
 
 {#if $state.loading}
-    <div class="fixed top-0 right-0 py-2 px-5">
-        <Spinner msg={$state.loadingMsg} />
+    <div class="fixed top-0 right-0">
+        <Alert>
+            <Spinner msg={$state.loadingMsg} />
+        </Alert>
     </div>
 {/if}
 

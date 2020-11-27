@@ -6,7 +6,7 @@
     export let disabled = false;
 </script>
 
-<label class="p-1 bg-gray-800 rounded truncate" for="{label}">
+<label class="radio-btn p-1 bg-gray-800 rounded truncate" for="{label}">
     <input
         type="radio"
         class="mr-1 leading-tight"

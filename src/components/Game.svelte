@@ -31,7 +31,7 @@
 </style>
 
 <a href="{`https://store.steampowered.com/app/${game.steam_appid}`}">
-    <div class="card" {title}>
+    <div class="card game-card" {title}>
         <img use:lazyLoad class="lazy w-full" data-src="{game.header_image}" alt="{game.name}">
         <div class="px-6 py-4">
             <h3 class="font-bold mb-2">

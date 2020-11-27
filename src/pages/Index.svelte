@@ -39,14 +39,14 @@
     }
 </script>
 
-<form on:submit|preventDefault={getAllProfiles}>
+<form class="sfn-form" on:submit|preventDefault={getAllProfiles}>
     <TextInput bind:value={identifier} placeholder={'enter your steamid or alias...'} />
     <Button attrs={{ type: 'submit', disabled: !formReady }}>
         get friends
     </Button>
 </form>
 
-<div class="text-center my-6">
+<div class="sfn-description text-center my-6">
     <h3>compare game libraries with friends ✓</h3>
     <h3>filter by platform or category ✓</h3>
     <h3>figure out what game to play tonight ✓</h3>

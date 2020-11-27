@@ -161,7 +161,7 @@
             </Button>
         {/if}
 
-        <div class="my-6">
+        <div class="library-profiles my-6">
             <h2>showing library intersection of:</h2>
             <div class="flex flex-wrap">
                 {#each $state.libraryResult.profiles.players as player}
@@ -172,7 +172,7 @@
             </div>
         </div>
 
-        <div class="my-6">
+        <div class="library-controls my-6">
             <div class="flex flex-wrap">
                 <div class="w-full sm:w-1/2">
                     <Checkbox label={'enable platform filter?'} bind:checked={enablePlatformFilter} />
@@ -189,7 +189,7 @@
 
         </div>
 
-        <div class="my-6">
+        <div class="library-categories my-6">
             <h2>categories:</h2>
             <Button on:click={ checkMultiplayerCategories }>check online multiplayer games</Button>
             <Button on:click={ uncheckAllCategories }>uncheck all</Button>
@@ -207,7 +207,7 @@
             </div>
         </div>
 
-        <div class="my-6">
+        <div class="library-games my-6">
             <h2>{filteredGames.length} games:</h2>
             <TextInput bind:value={gameTextFilter} placeholder={'filter by name...'} />
 

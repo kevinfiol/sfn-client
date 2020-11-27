@@ -66,14 +66,14 @@
 </script>
 
 {#if showFriends}
-    <div class="my-6">
+    <div class="friends-user my-6">
         <h2>you:</h2>
         <a href={$state.profiles.user.profileurl} target="_blank">
             <UserCard selectable={true} user={$state.profiles.user} />
         </a>
     </div>
 
-    <div class="my-8">
+    <div class="friends-staged my-8">
         <h2>select your friends and
             <span class="text-base mx-1">
                 <Button on:click={ getCommonApps } attrs={{ disabled: Object.keys($state.stagedFriends).length < 1 }}>
@@ -84,7 +84,7 @@
 
         <TextInput bind:value={friendNameFilter} placeholder={'filter by name...'} />
 
-        <div class="flex flex-wrap">
+        <div class="friends-friends flex flex-wrap">
             {#each filteredFriends as friend (friend.steamid)}
                 <div class="w-full sm:w-1/2 md:w-1/3 p-2">
                     <UserCard

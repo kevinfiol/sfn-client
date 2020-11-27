@@ -3,7 +3,7 @@
 </script>
 
 <div
-    class="bg-darken p-5 w-full rounded"
+    class="alert-container bg-darken p-5 w-full rounded"
     in:scale
     out:scale
 >

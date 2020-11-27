@@ -27,6 +27,6 @@
     onDestroy(() => clearInterval(timer));
 </script>
 
-<div class="font-extrabold">
+<h3 class="spinner">
     <span class="text-3xl">{spinner} </span><span class="text-lg">{msg}</span>
-</div>
+</h3>
