@@ -51,4 +51,5 @@
     <h3>filter by platform or category ✓</h3>
     <h3>figure out what game to play tonight ✓</h3>
     <p>(p.s. make sure your profile is set to <a class="underline" href="https://support.steampowered.com/kb_article.php?ref=4113-YUDH-6401">public</a>)</p>
+    <p>(<a class="underline" href="https://github.com/kevinfiol/steam-friend-night">source code on github</a>)</p>
 </div>
